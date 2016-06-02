@@ -1,0 +1,72 @@
+﻿//----------------------------------------------------------------------------- 
+// <copyright file=UnknownCommandException">
+//   Copyright (c) Frederic Thevenet. All Rights Reserved.
+// </copyright>
+// <author>Frederic Thevenet</author>
+// <license>
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+// </license>
+//----------------------------------------------------------------------------- 
+
+using System;
+using Eclair.Commands;
+
+
+namespace Eclair.Exceptions
+{
+    /// <summary>
+    /// The exception that is thrown when the command factory fails to recognize the provided keyword as a registered command.
+    /// </summary>
+    [Serializable]
+    public class UnknownCommandException : CommandLineInterpretationException
+    {
+
+        /// <summary>
+        /// Initializes a new instance of the UnknownCommandException class.
+        /// </summary>
+        public UnknownCommandException()
+            : base()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the UnknownCommandException class.
+        /// </summary>
+        /// <param name="msg">The error message that explains the reason for the exception.</param>       
+        public UnknownCommandException(string msg)
+            : base(msg)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the UnknownCommandException class.
+        /// </summary>
+        /// <param name="message">The error message that explains the reason for the exception.</param>
+        /// <param name="innerException">The exception that is the cause of the current exception. </param>
+        public UnknownCommandException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the UnknownCommandException class with serialized data.
+        /// </summary>
+        /// <param name="info">The SerializationInfo that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
+        protected UnknownCommandException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+            : base(info, context)
+        {
+        }
+    }   
+}
+

@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="1de74517-106f-472e-933a-1c2559c77364" revisionNumber="1">
+  <developerSDKTechnologyOverviewArchitectureDocument
+    xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <!--
+    <summary>
+      <para>Optional summary abstract</para>
+    </summary>
+    -->
+
+    <introduction>
+      <!--<para>This topic describes the main components, classes and principles behind the software architecture of ECLAIR.</para>-->
+      <!-- Uncomment this to generate an outline of the section and sub-section
+           titles.  Specify a numeric value as the inner text to limit it to
+           a specific number of sub-topics when creating the outline.  Specify
+           zero (0) to limit it to top-level sections only.  -->
+      <autoOutline>9</autoOutline>
+
+     
+    </introduction>
+
+    <!-- Add one or more top-level section elements.  These are collapsible.
+         If using <autoOutline />, add an address attribute to identify it
+         and specify a title so that it can be jumped to with a hyperlink. -->
+    <section address="Principles">     
+      <title>Principles</title>
+      <content>
+        <para>
+          ECLAIR uses inversion of control and dependency injection design patterns in order to facilitate an easy and safe expansion
+          of the software’s functionalities by third parties, while ensuring the stability of the core mechanism.
+        </para>
+        <para>
+          This ensures that custom code can be written to enable new functions without requiring any modification, or even getting
+          access to the rest of the source code. As a matter of fact, the new code can be compiled separately and loaded by ECLAIR
+          at runtime to become immediately available to the end user.
+        </para>
+        <para>
+          To achieve that, ECLAIR adopts an architecture that separates the core logic of the shell from the actual implementation
+          of the commands; developers wishing to expand the functionalities of ECLAIR will be required to implement the logic of
+          the new functions in classes that comply to certain rules and the actual execution of that code will be triggered by
+          the core implementation.
+        </para>
+        <mediaLink>
+          <caption placement="after" lead="Figure 1">Main components in ECLAIR</caption>
+          <image placement="center" xlink:href="Architecture"/>
+        </mediaLink>
+      </content>          
+    </section>
+
+    <section address="MainComponents">
+      <title>Main components</title>
+      <content>
+        <para>These are the most notable components of the ECLAIR software architecture.</para>                   
+      </content>
+      <sections>
+        <section>
+          <title>ECLAIR.exe</title>
+          <content>
+            <para>
+              A console based application that hosts the entry point for the application.
+            </para>
+            <para>
+              Its main purpose is to initialize and start an instance of the <codeEntityReference>T:Eclair.Commands.CommandProcessor</codeEntityReference> class.
+            </para>          
+          </content>
+        </section>
+        <section>
+          <title>Eclair.Core.dll</title>
+          <content>
+            <para>
+              An assembly that hosts most of the core implementation for ECLAIR.
+            </para>
+            <para>
+              It most notably contains the definitions for the <codeEntityReference qualifyHint="false">T:Eclair.Commands.CommandProcessor</codeEntityReference>
+             and <codeEntityReference qualifyHint="false">T:Eclair.Commands.CommandFactory</codeEntityReference> classes as well as interfaces and base classes needed to create ECLAIR commands and client proxy classes.
+          </para>
+          </content>
+          <sections>
+            <section>
+              <title>CommandProcessor</title>
+              <content>
+                <para>
+                  This is the class responsible for parsing command lines entered from the shell or read for from a script, and then triggers the execution of each command’s payload.
+                </para>
+                <para>
+                  From the raw command line, the command processor extracts commands’ keywords and arguments, as well as flow control keywords (pipe, redirection, etc…).
+                </para>
+                <para>
+                  The parsed command data is then sent to the command factory which in turn provides the processor with instances of the actual classes registered to the keywords in the input command line.
+                </para>
+                <para>
+                  Finally the command processor invokes the method that implements the commands payload and provides it with both the arguments from the command line and the execution context and connection object to the server.
+                </para>
+              </content>
+            </section>
+            <section>
+              <title>CommandFactory</title>
+              <content>
+                <para>
+                  This is the class responsible for registering individual command classes from external assemblies, known as “command libraries”, and instantiate new objects for the <codeEntityReference>T:Eclair.Commands.CommandProcessor</codeEntityReference> instance to execute.
+                </para>
+                <para>
+                  The command factory uses reflection to browse through all types in specified assemblies and registeres the eligible types as commands, alongside its properties such as its associated keyword, category and inline help data.
+                </para>
+                <para>
+                  To be registered as a command by the factory, a type must be an instantiable class that implements the <codeEntityReference>T:Eclair.Commands.ICommand</codeEntityReference> interface. It also needs to be decorated with a CommandInfo attribute which specifies the command’s keyword and other properties.
+                </para>
+                <para>
+                  The <codeEntityReference>T:Eclair.Commands.CommandFactory</codeEntityReference> class also provides methods to return a new instance of a command when given its keyword, as well as methods to returns lists of all registered commands, categories, etc…
+                </para>
+                <para>
+                  The command factory also registers another type of classes, called Client Proxy Factory. There can be only one Client Proxy factory registered at any time.
+                </para>
+                <para>
+                  A Client Proxy Factory is a class that implements <codeEntityReference>T:Eclair.Commands.IClientProxyFactory</codeEntityReference>, and whose responsibility is to allow the command processor to build a new instance of a client proxy object (the abstraction layer that handles communication to a server) when needed.
+                </para>
+              </content>              
+            </section>
+            <section>
+              <title>ICommand</title>
+              <content>
+                <para>
+                  This is the interface that defines the methods and properties that a class representing a ECLAIR command must implement.
+                </para>
+              </content>
+            </section>
+            <section>
+              <title>CommandBase</title>
+              <content>
+                <para>
+                  This is an abstract class that provides a base implementation for some of the methods defined by the ICommand interface. It also provides utilities to interact with the shell environment, for outputting errors, info or warnings.
+                </para>
+                <para>
+                  Unless the developer wants to handle the output of his or her commands in a specific way, it is recommended that new command inherits form <codeEntityReference>T:Eclair.Commands.CommandBase</codeEntityReference> rather that implements <codeEntityReference>T:Eclair.Commands.ICommand</codeEntityReference> directly.
+                </para>
+              </content>
+            </section>
+            <section>
+              <title>CommandInfoAttribute</title>
+              <content>
+                <para>
+                  An attribute that represents the properties of a ECLAIR command.
+                </para>
+                <para>
+                  In order to be registered as an executable command by the <codeEntityReference>T:Eclair.Commands.CommandFactory</codeEntityReference>, a class must both implement the ICommand interface but it also must be decorated by a CommandInfo attribute.
+                </para>
+                <para>
+                  This provides the mean to pass onto the <codeEntityReference>T:Eclair.Commands.CommandFactory</codeEntityReference> the various pieces of information it will need in order to be able to register and create new objects representing the commands, such as the keyword used to invoke the command, and the text that should be displayed when the user invokes the inline help.
+                </para>
+              </content>
+            </section>
+            <section>
+              <title>IClientProxyFactory</title>
+              <content>
+                <para>
+                  The <codeEntityReference>T:Eclair.Commands.IClientProxyFactory</codeEntityReference> defines the creation methods a client proxy factory must implement. At least one type implementing this interface (but no more) must be registered with the CommandFactory instance.
+                </para>
+              </content>
+            </section>
+            <section>
+              <title>IClientProxy</title>
+              <content>
+                <para>
+                  The <codeEntityReference>T:Eclair.Commands.IClientProxy</codeEntityReference> interface defines the connection and disconnection methods a client proxy must implement to handle communication with a server.
+                </para>
+              </content>
+            </section>
+          </sections>
+        </section>
+        <section>
+          <title>Command Librairies</title>
+          <content>
+            <para>
+              Command libraries are .NET assemblies that contain types that implement the <codeEntityReference>T:Eclair.Commands.ICommand</codeEntityReference> interface 
+              (and optionally inherit from <codeEntityReference>T:Eclair.Commands.CommandBase</codeEntityReference>), and are decorated with <codeEntityReference>T:Eclair.Commands.CommandInfoAttribute</codeEntityReference>.
+            </para>
+            <para>
+              These classes contain the actually payload for each command, that will be executed when the command
+              keyword is invoked from the command line or a script.
+            </para>
+            <para>
+              If a command library assembly is located into a subfolder called “CommandLibraries” when ECLAIR starts up,
+              it will be scanned by the <codeEntityReference>T:Eclair.Commands.CommandFactory</codeEntityReference> instance for valid commands and these will be automatically registered.
+            </para>
+            <para>
+              Alternatively, it is possible to register command libraries from an assembly located in a different
+              path and at runtime from the command line using the command shell\load.
+            </para>
+            <para>
+              (NB: The security configuration of the .NET framework may affect the location from which assemblies
+              can be loaded).
+            </para>
+          </content>
+        </section>
+      </sections>
+    </section>
+
+    
+    <relatedTopics>
+
+      <codeEntityReference qualifyHint="true">T:Eclair.Commands.CommandProcessor</codeEntityReference>
+      <codeEntityReference qualifyHint="true">T:Eclair.Commands.CommandFactory</codeEntityReference>
+      <codeEntityReference qualifyHint="true">T:Eclair.Commands.ICommand</codeEntityReference>
+      <codeEntityReference qualifyHint="true">T:Eclair.Commands.CommandBase</codeEntityReference>
+      <codeEntityReference qualifyHint="true">T:Eclair.Commands.CommandInfoAttribute</codeEntityReference>
+      <codeEntityReference qualifyHint="true">T:Eclair.Commands.IClientProxyFactory</codeEntityReference>
+      <codeEntityReference qualifyHint="true">T:Eclair.Commands.IClientProxy</codeEntityReference>
+      <!-- One or more of the following:
+           - A local link
+           - An external link
+           - A code entity reference
+
+      <link xlink:href="Other Topic's ID">Link text</link>
+      <externalLink>
+          <linkText>Link text</linkText>
+          <linkAlternateText>Optional alternate link text</linkAlternateText>
+          <linkUri>URI</linkUri>
+      </externalLink>
+      <codeEntityReference>API member ID</codeEntityReference>
+
+      Examples:
+
+      <link xlink:href="00e97994-e9e6-46e0-b420-5be86b2f8278">Some other topic</link>
+
+      <externalLink>
+          <linkText>SHFB on CodePlex</linkText>
+          <linkAlternateText>Go to CodePlex</linkAlternateText>
+          <linkUri>http://shfb.codeplex.com</linkUri>
+      </externalLink>
+
+      <codeEntityReference>T:TestDoc.TestClass</codeEntityReference>
+      <codeEntityReference>P:TestDoc.TestClass.SomeProperty</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.#ctor(System.String,System.Int32)</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.ToString</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.FirstMethod</codeEntityReference>
+      <codeEntityReference>M:TestDoc.TestClass.SecondMethod(System.Int32,System.String)</codeEntityReference>
+      -->
+    </relatedTopics>
+  </developerSDKTechnologyOverviewArchitectureDocument>
+</topic>

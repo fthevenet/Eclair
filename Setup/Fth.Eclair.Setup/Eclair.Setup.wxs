@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+	<?define ProductVersion="!(bind.FileVersion.ECLAIR.exe)" ?>
+	
+	<Product Id="*" Name="Expandable Command Line Applications Interactive Runtime (ECLAIR)" Language="1033" Version="$(var.ProductVersion)" Manufacturer="Frederic Thevenet" UpgradeCode="F243117E-9302-45D8-94B6-462B346D4BCF">
+ 
+		<Package Description="Expandable Command Line Applications Interactive Runtime" Comments="Expandable Command Line Applications Interactive Runtime (build $(var.ProductVersion))" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+			 
+		<Icon Id="Eclair.ico" SourceFile="$(var.Eclair.Terminal.ProjectDir)\Eclair.ico"/>
+				<Property Id="ARPPRODUCTICON" Value="Eclair.ico" />
+				<Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
+
+				<Upgrade Id="F243117E-9302-45D8-94B6-462B346D4BCF">
+					<UpgradeVersion Minimum="3.0.0.0" Maximum="3.9.0.0" Property="PREVIOUSVERSIONSINSTALLED" IncludeMinimum="yes" IncludeMaximum="no" />
+				</Upgrade>
+		
+				<InstallExecuteSequence>
+					<RemoveExistingProducts After="InstallInitialize" />
+				</InstallExecuteSequence>
+		
+				<Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
+				<WixVariable Id="WixUIBannerBmp" Value=".\Ressources\ECLAIR_Install_Banner.jpg" />
+				<WixVariable Id="WixUIDialogBmp" Value=".\Ressources\ECLAIR_Install_Splash.jpg" />
+				<!--<WixVariable Id="WixUILicenseRtf" Value=".\Ressources\Licence.rtf" />-->
+
+				<Directory Id="TARGETDIR" Name ="SourceDir">
+					<Directory Id="ProgramFilesFolder" >
+						<Directory Id="ProgramMenuFolder">          
+							<Directory Id="ApplicationProgramsFolder" Name="ECLAIR"/>
+						</Directory>
+					
+					
+						<Directory Id="INSTALLDIR" Name="ECLAIR">     
+
+								<Component Id="Eclair.Core.dll" DiskId="1" Guid="105EDCF7-4557-47CE-AD8D-7BF8D254692E">
+										<File Id="Eclair.Core.dll"  Name="$(var.Eclair.Core.TargetFileName)" Source="$(var.Eclair.Core.TargetPath)" />
+								</Component>
+						 
+								<Component Id="ECLAIR.exe" Guid="4952E59E-AE71-45BA-827C-7602F0FBED0C">
+										<File Id="ECLAIR.exe"  Name="$(var.Eclair.Terminal.TargetFileName)" Source="$(var.Eclair.Terminal.TargetPath)">                  
+										</File>
+				
+										<!-- Capabilities keys for Vista/7 "Set Program Access and Defaults" -->
+										<RegistryValue Root="HKLM" Key="SOFTWARE\Eclair\Capabilities" Name="ApplicationDescription" Value="Expandable Command Line Applications Interactive Runtime" Type="string" />
+										<RegistryValue Root="HKLM" Key="SOFTWARE\Eclair\Capabilities" Name="ApplicationIcon" Value="[INSTALLDIR]ECLAIR.exe,0" Type="string" />
+										<RegistryValue Root="HKLM" Key="SOFTWARE\Eclair\Capabilities" Name="ApplicationName" Value="Eclair" Type="string" />
+										<RegistryValue Root="HKLM" Key="SOFTWARE\Eclair\Capabilities\DefaultIcon" Value="[INSTALLDIR]ECLAIR.exe,1" Type="string" />
+										<RegistryValue Root="HKLM" Key="SOFTWARE\Eclair\Capabilities\FileAssociations" Name=".eclair" Value="Eclair.Document" Type="string" />
+										<RegistryValue Root="HKLM" Key="SOFTWARE\Eclair\Capabilities\MIMEAssociations" Name="application/Eclair" Value="Eclair.Document" Type="string" />
+										<RegistryValue Root="HKLM" Key="SOFTWARE\Eclair\Capabilities\shell\Run\command" Value="&quot;[INSTALLDIR]ECLAIR.exe&quot; &quot;RUN&quot; &quot;%1&quot; -noLogo -noStartUpScript" Type="string" />                 
+										<RegistryValue Root="HKLM" Key="SOFTWARE\RegisteredApplications" Name="Eclair" Value="SOFTWARE\Eclair\Capabilities" Type="string" />
+
+										<!-- App Paths to support Start,Run -> "Eclair" -->
+										<RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ECLAIR.exe" Value="[!ECLAIR.exe]" Type="string" />
+										<RegistryValue Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ECLAIR.exe" Name="Path" Value="[INSTALLDIR]" Type="string" />
+
+										<!-- Extend to the "open with" list + Win7 jump menu pinning  -->
+										<RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\ECLAIR.exe\SupportedTypes" Name=".eclair" Value="" Type="string" />
+										<RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Applications\ECLAIR.exe\shell\Run" Name="FriendlyAppName" Value="Eclair" Type="string" />
+
+										<!-- Eclair.Document ProgID -->
+										<RegistryValue Root="HKLM" Key="SOFTWARE\Classes\Eclair.Document" Name="FriendlyTypeName" Value="Eclair Script" Type="string" />
+										<ProgId Id="Eclair.Document" Description="ECLAIR Script" Advertise="yes" Icon="Eclair.ico">
+												<Extension Id="eclair">
+													<Verb Id="Run" Command="Run" Argument="&quot;RUN&quot; &quot;%1&quot; -noLogo -noStartUpScript" Sequence="1" />
+													<Verb Id="Open" Command="Open" Argument="&quot;RUN&quot; &quot;%1&quot; -noStartUpScript -forceInteractive" Sequence="2" />
+													<MIME Advertise="yes" ContentType="application/eclair" Default="yes" />
+												</Extension>
+										</ProgId>
+
+										<!-- Edit with notepad.exe -->
+										<RegistryValue Root="HKLM" Key="SOFTWARE\Classes\SystemFileAssociations\.eclair\shell\eclair.edit.Notepad.exe" Value="Edit" Type="string" />
+										<RegistryValue Root="HKLM" Key="SOFTWARE\Classes\SystemFileAssociations\.eclair\shell\eclair.edit.Notepad.exe\command" Value="&quot;Notepad.exe&quot; &quot;%1&quot;" Type="string" />
+								</Component>
+							
+								<Component Id="ECLAIR.exe.config" DiskId="1" Guid="00DA642F-AB86-4198-8DCA-94A7B50E2E80">
+										<File Id="ECLAIR.exe.config" Name="ECLAIR.exe.config" Source="$(var.Eclair.Terminal.ProjectDir)\app.config" />
+								</Component>
+							
+								<Component Id="en_eclair_user_guide.chm" DiskId="1" Guid="{8C7C2490-28E0-4AE1-86D9-87C76C3AC5E6}">
+										<File Id="en_eclair_user_guide.chm" Name="en_eclair_user_guide.chm" Source=".\Ressources\ECLAIR Documentation.chm" />
+								</Component>
+								<Component Id="Eclair.ico" DiskId="1" Guid="AEE7AFC0-FE13-44B2-8A41-952531B8FC68">
+										<File Id="Eclair.ico" Name="Eclair.ico" Source="$(var.Eclair.Terminal.ProjectDir)\Eclair.ico" />
+								</Component>
+							
+								<Directory Id="COMMANDLIB" Name="CommandLibraries">                
+											 
+								</Directory>
+
+						</Directory>
+
+						<Component Id="Log4net.dll" Guid="878D0EA8-C44E-4184-941F-80CF3FCC80EA">         
+							<File Id="Log4net.dll" Name="log4net.dll" Source=".\Ressources\log4net.dll" Assembly=".net" KeyPath="yes">
+								<netfx:NativeImage Id="ngen_log4net.dll" Platform="all" Priority="0" AppBaseDirectory="INSTALLDIR" />
+							</File>
+						</Component>
+									
+					</Directory>
+				</Directory>
+				<DirectoryRef Id="ApplicationProgramsFolder">
+					<Component Id="ApplicationShortcut" Guid="{4790F52D-0518-48F8-BF4E-96B02C24943B}">
+						<Shortcut Id="ApplicationStartMenuShortcut"
+											Name="Launch ECLAIR"
+											Description="Expandable Command Line Applications Interactive Runtime (ECLAIR)"
+											Target="[INSTALLDIR]\ECLAIR.exe"
+											WorkingDirectory="INSTALLDIR"/>
+						<Shortcut Id="UninstallProduct"
+												 Name="Uninstall ECLAIR"
+												 Description="Uninstalls ECLAIR"
+												 Target="[System64Folder]msiexec.exe"
+												 Arguments="/x [ProductCode]"/>
+						<RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+						<RegistryValue Root="HKCU" Key="Software\Fth\Cif" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+					</Component>
+				</DirectoryRef>
+		
+				<UI Id="WixUI_FeatureTree">
+					<TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+					<TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
+					<TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
+					<Property Id="DefaultUIFont" Value="WixUI_Font_Normal" />
+					<Property Id="WixUI_Mode" Value="FeatureTree" />
+					<DialogRef Id="ErrorDlg" />
+					<DialogRef Id="FatalError" />
+					<DialogRef Id="FilesInUse" />
+					<DialogRef Id="MsiRMFilesInUse" />
+					<DialogRef Id="PrepareDlg" />
+					<DialogRef Id="ProgressDlg" />
+					<DialogRef Id="ResumeDlg" />
+					<DialogRef Id="UserExit" />
+					<Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+					<Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="CustomizeDlg">1</Publish>
+					<Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="1">Installed</Publish>
+					<Publish Dialog="CustomizeDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Order="2">NOT Installed</Publish>
+					<Publish Dialog="CustomizeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+					<Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="CustomizeDlg" Order="1">NOT Installed OR WixUI_InstallMode = "Change"</Publish>
+					<Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="2">Installed</Publish>
+					<Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
+					<Publish Dialog="MaintenanceTypeDlg" Control="ChangeButton" Event="NewDialog" Value="CustomizeDlg">1</Publish>
+					<Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+					<Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
+					<Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MaintenanceWelcomeDlg">1</Publish>
+				</UI>
+				<UIRef Id="WixUI_Common" />
+				<PropertyRef Id="NETFRAMEWORK40FULL" />
+				<Condition Message="This application requires .NET Framework 4">
+					<![CDATA[Installed OR NETFRAMEWORK40FULL]]>
+				</Condition>
+						 
+				<Feature Id="Eclair.Core" Level="1" ConfigurableDirectory="INSTALLDIR" Title="Core Components" TypicalDefault="install" Absent="disallow" AllowAdvertise="no" Description="ECLAIR core componants. These will always be installed" InstallDefault="local" Display="expand">
+
+					<ComponentRef Id="ECLAIR.exe.config" />         
+					<ComponentRef Id="Eclair.Core.dll" />
+					<ComponentRef Id="ECLAIR.exe" />
+					<ComponentRef Id="Eclair.ico" />
+					<ComponentRef Id="Log4net.dll" />
+					<ComponentRef Id="en_eclair_user_guide.chm"/>
+
+					<ComponentRef Id ="ApplicationShortcut" />
+
+
+ 
+
+					</Feature>
+		</Product>
+</Wix>

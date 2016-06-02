@@ -1,0 +1,2999 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Eclair.Core</name>
+  </assembly>
+  <members>
+    <member name="T:Eclair.Commands.CommandBase">
+      <summary>
+            Provides a base implementation for the ICommand interface, and provides utilities to interact with the shell environment.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandBase.#ctor">
+      <summary>
+            Initializes a new instance of the CommandBase class.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandBase.CommandInfo">
+      <summary>
+            Gets the properties of the command.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandBase.Dispose">
+      <summary>
+            Disposes the CommandBase instance.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandBase.Dispose(System.Boolean)">
+      <summary>
+            Disposes the CommandBase instance.
+            </summary>
+      <param name="disposing">True if managed resources must be released, false otherwise.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandBase.Execute(Eclair.Commands.CommandContext)">
+      <summary>
+            Executes the logic implemented for the specified command.
+            </summary>
+      <param name="context">A CommandContext object that provides the execution context under which the command logic is running.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandBase.Execute(Eclair.Commands.CommandContext,System.Collections.Generic.List{System.String}@)">
+      <summary>
+            Executes the logic implemented for the specified command.
+            </summary>
+      <param name="context">A CommandContext object that provides the execution context under which the command logic is running.</param>
+      <param name="results">A list of string into which the output of the command will be stored.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandBase.Execute(Eclair.Commands.CommandContext,System.String)">
+      <summary>
+            Executes the logic implemented for the specified command. 
+            </summary>
+      <param name="context">A CommandContext object that provides the execution context under which the command logic is running.</param>
+      <param name="outputFile">The path to a file into which the output of the command will be redirected.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandBase.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            Implements the core logic for the command.
+            </summary>
+      <param name="context">A CommandContext object that provides the execution context under which the command logic is running.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandBase.OutputDebug(System.String,System.Object[])">
+      <summary>
+            Writes a message to the debug channel of the CommandProcessor.
+            </summary>
+      <param name="message">A composite format string.</param>
+      <param name="args">An object array that contains zero or more objects to format.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandBase.OutputError(System.String,System.Object[])">
+      <summary>
+            Writes a message to the error channel of the CommandProcessor.
+            </summary>
+      <param name="message">A composite format string.</param>
+      <param name="args">An object array that contains zero or more objects to format.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandBase.OutputInfo(System.String)">
+      <summary>
+            Writes a message to the info channel of the CommandProcessor.
+            </summary>
+      <param name="message">The message to write.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandBase.OutputInfo(System.String,System.Object[])">
+      <summary>
+            Writes a message to the info channel of the CommandProcessor.
+            </summary>
+      <param name="message">A composite format string.</param>
+      <param name="args">An object array that contains zero or more objects to format.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandBase.OutputWarning(System.String,System.Object[])">
+      <summary>
+            Writes a message to the warning channel of the CommandProcessor.
+            </summary>
+      <param name="message">A composite format string.</param>
+      <param name="args">An object array that contains zero or more objects to format.</param>
+    </member>
+    <member name="T:Eclair.Commands.CommandContext">
+      <summary>
+            Represents the execution context of a ECLAIR command.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandContext.#ctor(Eclair.Commands.CommandProcessorEnvironment,Eclair.Commands.IClientProxy,System.Collections.Generic.List{System.String})">
+      <summary>
+            Initializes a new instance of the CommandContext class.
+            </summary>
+      <param name="environment">The CommandProcessor environment.</param>
+      <param name="clientProxy">The proxy to the current client connection.</param>
+      <param name="commandLineArguments">The command line arguments passed by the user.</param>
+    </member>
+    <member name="P:Eclair.Commands.CommandContext.ClientProxy">
+      <summary>
+            Gets the proxy to the current client connection.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandContext.CommandLineArguments">
+      <summary>
+            Gets the command line arguments passed by the user.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandContext.Environment">
+      <summary>
+            Gets the underlying CommandProcessor environment.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.CommandFactory">
+      <summary>
+            Provides methods for creating ICommand objects from keywords passed as string. 
+            Also provides methods to load external command libraries. This class cannot be inherited.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandFactory.CategoryExists(System.String)">
+      <summary>
+            Determines whether the specified category exists.
+            </summary>
+      <param name="category">The name of the category.</param>
+      <returns>
+            True if at least one of the registered command refers to the specified category; false otherwise.
+            </returns>
+    </member>
+    <member name="M:Eclair.Commands.CommandFactory.CategoryExists(System.String,System.Boolean)">
+      <summary>
+            Determines whether the specified category exists.
+            </summary>
+      <param name="category">The name of the category.</param>
+      <param name="searchAll">True to also search for categories that don't contain any browsable category, false, otherwise.</param>
+      <returns>
+            True if at least one of the registered command refers to the specified category; false otherwise.
+            </returns>
+    </member>
+    <member name="P:Eclair.Commands.CommandFactory.ClientProxyFactory">
+      <summary>
+            Get the registered Client Proxy Factory.
+            </summary>
+      <exception cref="T:Eclair.Exceptions.ClientProxyFactoryNullException">
+            Throws a ClientProxyFactoryNullException if no ClientProxyFactory is currently registered.
+            </exception>
+    </member>
+    <member name="M:Eclair.Commands.CommandFactory.CommandExists(System.String,System.String)">
+      <summary>
+            Determines whether the specified command exists for the specified category.
+            </summary>
+      <param name="category">The name of the category.</param>
+      <param name="commandKeyword">The keyword for the command to check.</param>
+      <returns>
+            True is the command passed as a parameters exists in the provided category; false otherwise.
+            </returns>
+    </member>
+    <member name="M:Eclair.Commands.CommandFactory.CreateCommand(System.String,System.Collections.Generic.List{System.String})">
+      <summary>
+            Create and returns a new ICommand instance from the specified argument list.
+            </summary>
+      <param name="category">The current command category.</param>
+      <param name="args">The specified argument list.</param>
+      <returns>The instance of the class representing the command specified in the argument list.</returns>
+      <exception cref="T:Eclair.Exceptions.UnknownCommandException">An UnknownCommandException is thrown if no valid ICommand can be instantiated from the provided argument list.</exception>
+    </member>
+    <member name="M:Eclair.Commands.CommandFactory.FindCategories(System.String)">
+      <summary>
+            Retrieves a list of all categories that contain a command with the specified keyword.
+            </summary>
+      <param name="commandKeyword">Keyword of the command.</param>
+      <returns>
+            A List of all categories that contain a command with the specified keyword.
+            </returns>
+    </member>
+    <member name="M:Eclair.Commands.CommandFactory.GetCategories">
+      <summary>
+            Gets a list of registered command categories.
+            </summary>
+      <returns>A list of registered command categories</returns>
+    </member>
+    <member name="M:Eclair.Commands.CommandFactory.GetCategories(System.Boolean)">
+      <summary>
+             Gets a list of registered command categories.
+            </summary>
+      <param name="returnAll">True to retrieve all categories, including those containing no browsable commands, false otherwise.</param>
+      <returns>A list of registered command categories</returns>
+    </member>
+    <member name="M:Eclair.Commands.CommandFactory.GetCommands(System.String)">
+      <summary>
+            Returns an enumeration of all browsable commands registered by the factory for a given category.
+            </summary>
+      <param name="category">The category to retrieve browsable commands from.</param>
+      <returns>An enumeration of all browsable commands.</returns>
+    </member>
+    <member name="M:Eclair.Commands.CommandFactory.GetCommands(System.String,System.Boolean)">
+      <summary>
+            Returns an enumeration of all browsable commands registered by the factory for a given category.
+            </summary>
+      <param name="category">The category to retrieve browsable commands from.</param>
+      <param name="includeHidden">Set to true to return all commands in the category, including the commands marked as "Not browsable".
+            If false only the browsable commands are returned.</param>
+      <returns>An enumeration of all browsable commands.</returns>
+    </member>
+    <member name="P:Eclair.Commands.CommandFactory.Instance">
+      <summary>
+            Gets a singleton instance for the CommandFactory class.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandFactory.LibFolder">
+      <summary>
+            Get the path to the default command library folder.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandFactory.LoadCommandLibrary(System.Reflection.Assembly)">
+      <summary>
+            Loads a command library from the specified assembly.
+            </summary>
+      <param name="assembly">The assembly to load the command library from.</param>
+      <returns>The number of command successfully registered from the library.</returns>
+    </member>
+    <member name="M:Eclair.Commands.CommandFactory.LoadCommandLibrary(System.String)">
+      <summary>
+            Loads a command library from the specified path.
+            </summary>
+      <param name="path">The path to load the command library from.</param>
+      <returns>The number of command successfully registered from the library.</returns>
+    </member>
+    <member name="P:Eclair.Commands.CommandFactory.RegisteredLibraries">
+      <summary>
+            Gets a list of registered command libraries.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandFactory.TryGetCommandInfo(System.String,System.String,Eclair.Commands.CommandInfoAttribute@)">
+      <summary>
+            Retrieves a CommandInfoAttribute object for the specified command keyword and category. 
+            A return value indicates whether a CommandInfoAttribute could be identified for the specified keyword and category.
+            </summary>
+      <param name="category">Name of the category.</param>
+      <param name="commandKeyword">Keyword of the command.</param>
+      <param name="info">The resulting CommandInfoAttribute instance.</param>
+      <returns>True if the method successfully retrieved a CommandInfoAttribute for the specified keyword.</returns>
+    </member>
+    <member name="T:Eclair.Commands.CommandInfoAttribute">
+      <summary>
+            Specifies the properties and usage of a ECLAIR command. 
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandInfoAttribute.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:Eclair.Commands.CommandInfoAttribute" /> class.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandInfoAttribute.#ctor(System.String,System.String,System.String,System.String,System.String)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Eclair.Commands.CommandInfoAttribute" /> class.
+            </summary>
+      <param name="category">The category for the command.</param>
+      <param name="commandKeyword">The keyword used by the interpreter to identify the command.</param>
+      <param name="commandDescription">The description of the command.</param>
+      <param name="commandExample">A usage example for the command.</param>
+      <param name="commandParameters">The description of the parameters for the command.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandInfoAttribute.#ctor(System.String,System.String,System.String,System.String,System.String,System.Boolean)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Eclair.Commands.CommandInfoAttribute" /> class.
+            </summary>
+      <param name="category">The category for the command.</param>
+      <param name="commandKeyword">The keyword used by the interpreter to identify the command.</param>
+      <param name="commandDescription">The description of the command.</param>
+      <param name="commandExample">A usage example for the command.</param>
+      <param name="commandParameters">The description of the parameters for the command.</param>
+      <param name="serverNotRequired">True if the command can be executed without a connexion to a server, False otherwise.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandInfoAttribute.#ctor(System.String,System.String,System.String,System.String,System.String[])">
+      <summary>
+            Initializes a new instance of the <see cref="T:Eclair.Commands.CommandInfoAttribute" /> class.
+            </summary>
+      <param name="category">The category for the command.</param>
+      <param name="commandKeyword">The keyword used by the interpreter to identify the command.</param>
+      <param name="commandDescription">The description of the command.</param>
+      <param name="commandExample">A usage example for the command.</param>
+      <param name="commandParameters">The description of the parameters for the command.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandInfoAttribute.#ctor(System.String,System.String,System.String,System.String,System.String[],System.Boolean)">
+      <summary>
+            Initializes a new instance of the <see cref="T:Eclair.Commands.CommandInfoAttribute" /> class.
+            </summary>
+      <param name="category">The category for the command.</param>
+      <param name="commandKeyword">The keyword used by the interpreter to identify the command.</param>
+      <param name="commandDescription">The description of the command.</param>
+      <param name="commandExample">A usage example for the command.</param>
+      <param name="commandParameters">The description of the parameters for the command.</param>
+      <param name="serverNotRequired">True if the command can be executed without a connexion to a server, False otherwise.</param>
+    </member>
+    <member name="P:Eclair.Commands.CommandInfoAttribute.Category">
+      <summary>
+            Gets or sets the category for the command.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandInfoAttribute.CommandType">
+      <summary>
+            Gets or sets the Type of the command class.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandInfoAttribute.Description">
+      <summary>
+            Gets or sets the description of the command.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandInfoAttribute.Example">
+      <summary>
+            Gets or sets a usage example for the command.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandInfoAttribute.Keyword">
+      <summary>
+            Gets or sets the keyword used by the interpreter to identify the command.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandInfoAttribute.NotBrowsable">
+      <summary>
+             Gets or sets True if the command should not appears when in-line help is invoked. 
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandInfoAttribute.Parameters">
+      <summary>
+            Gets or sets the description of the parameters for the command.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandInfoAttribute.ServerNotRequired">
+      <summary>
+            Gets or sets True if the command can be executed without a connexion to a server, False otherwise.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.CommandProcessor">
+      <summary>
+            Defines an ECLAIR processor that can be used to interpret and execute commands loaded from command libraries.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessor.ArgumentList">
+      <summary>
+            Gets or sets the list of arguments for the command processor.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessor.ConnectedUser">
+      <summary>
+            Returns the connected user.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessor.Create(System.Boolean)">
+      <summary>
+            Create a new instance of the CommandProcessor class.
+            </summary>
+      <param name="runInConsole">Set to True if the command processor runs in the Windows console, False otherwise.</param>
+      <returns>The newly created CommandProcessor instance.</returns>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessor.Create(System.Boolean,System.Collections.Generic.List{System.String})">
+      <summary>
+            Create a new instance of the CommandProcessor class.
+            </summary>
+      <param name="runInConsole">Set to True if the command processor runs in the Windows console, False otherwise.</param>
+      <param name="args">Arguments for the command processor, specified as a list of strings.</param>
+      <returns>The newly created CommandProcessor instance.</returns>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessor.Dispose">
+      <summary>
+            Disposes the command processor.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessor.Dispose(System.Boolean)">
+      <summary>
+            Dispose the command processor.
+            </summary>
+      <param name="disposing">True if managed resources should be disposed, false otherwise.</param>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessor.DoNotRunStartUpScript">
+      <summary>
+            Returns true if the command processor is configured to ignore the startup script, False otherwise.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessor.Environment">
+      <summary>
+            Gets a ShellEnvironment object for the command processor.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessor.Finalize">
+      <summary>
+            Destroys the current CommandProcessor instance.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessor.ForceInteractiveMode">
+      <summary>
+             Returns true if the command processor is forced in interactive mode, False otherwise.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessor.InputCommandLine(System.Collections.Generic.List{System.String})">
+      <summary>
+             Processes an input command line. 
+            </summary>
+      <param name="args">The input line to process, specified as a list of arguments.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessor.InputCommandLine(System.String)">
+      <summary>
+            Processes an input command line. 
+            </summary>
+      <param name="line">The input line to process, specified as a string.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessor.InterpretCommandLine(System.Collections.Generic.List{System.String})">
+      <summary>
+            Interprets and executes a single command line.
+            </summary>
+      <param name="args">The command line to interpret, specified as a list of arguments.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessor.InterpretCommandLine(System.String)">
+      <summary>
+            Interprets and executes  a single command line.
+            </summary>
+      <param name="line">The command line to interpret, specified as a string.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessor.InterpretScriptLine(System.Collections.Generic.List{System.String},Eclair.Commands.Scripting.ScriptInfo)">
+      <summary>
+            Interprets and executes a single script line.
+            </summary>
+      <param name="args">The script line to interpret, specified as a list of arguments.</param>
+      <param name="script">Info on the script.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessor.InterpretScriptLine(System.String,Eclair.Commands.Scripting.ScriptInfo)">
+      <summary>
+            Interprets and executes a single script line.
+            </summary>
+      <param name="line">The script line to interpret, specified as a string.</param>
+      <param name="script">Info on the script.</param>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessor.IsArgsContainCommands">
+      <summary>
+            Returns true if the argument list contains registered commands.
+            </summary>
+    </member>
+    <member name="E:Eclair.Commands.CommandProcessor.OnStarted">
+      <summary>
+            Occurs when the commandProcessor is started.
+            </summary>
+    </member>
+    <member name="E:Eclair.Commands.CommandProcessor.OnStopped">
+      <summary>
+            Occurs when the commandProcessor has stopped.
+            </summary>
+    </member>
+    <member name="E:Eclair.Commands.CommandProcessor.OnStopping">
+      <summary>
+            Occurs when the commandProcessor is instructed to stop.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessor.ParseCommandLine(System.String)">
+      <summary>
+            Parses a command line specified as a string into a list of arguments.
+            </summary>
+      <param name="commandLine">The command line to parse, as a string.</param>
+      <returns>The parsed command line, a list of strings.</returns>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessor.Run">
+      <summary>
+            Starts the command processor in interpreter mode.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessor.RunInConsole">
+      <summary>
+            Specifies is the application I/O are being redirected.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessor.Servers">
+      <summary>
+            Returns the list of connected servers. 
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessor.Start">
+      <summary>
+            Starts the command processor in interactive mode.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessor.TempFolders">
+      <summary>
+            Gets the collection of disposable temp folders for the processor.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessor.TerminalOutput">
+      <summary>
+            Gets the output logger for the command processor.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.CommandProcessorEnvironment">
+      <summary>
+            Provides information about, and means to manipulate, the current environment of a CommandProcessor instance.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessorEnvironment.#ctor(Eclair.Commands.CommandProcessor)">
+      <summary>
+            Initializes a new instance of the ShellEnvironment class.
+            </summary>
+      <param name="cmdProc">The CommandProcessor instance to which this environment applies to.</param>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessorEnvironment.#ctor(Eclair.Commands.CommandProcessor,System.String,Eclair.Commands.CommandProcessorRunningMode)">
+      <summary>
+            Initializes a new instance of the ShellEnvironment class.
+            </summary>
+      <param name="cmdProc">The commandProcessor instance to which this environment applies to.</param>
+      <param name="currentCategory">The current command category.</param>
+      <param name="runningMode">The running mode of the CommandProcessor instance</param>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessorEnvironment.CancelPending">
+      <summary>
+            Returns True if the cancellation of a command has been required by an end user pressing Ctrl+C, False otherwise.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessorEnvironment.CurrentCategory">
+      <summary>
+            Gets or sets the current command category of the CommandProcessor.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessorEnvironment.EmitCommand(System.String)">
+      <summary>
+            A method that can be used to specify a command line that should be interpreted and executed by the current CommandProcessor instance.
+            </summary>
+      <param name="commandLine">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>commandLine</parameter>
+            <parameter>M:Eclair.Commands.CommandProcessorEnvironment.EmitCommand(System.String)</parameter>
+          </include>
+        </markup>
+      </param>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessorEnvironment.ExitPending">
+      <summary>
+            Returns True if the CommandProcessor instance is exiting, False otherwise.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessorEnvironment.GetDisposableTempFolder">
+      <summary>
+            Returns a new disposable temporary folder.
+            </summary>
+      <returns>A new disposable temporary folder.</returns>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessorEnvironment.RunInConsole">
+      <summary>
+            Returns True if the CommandProcessor instance runs in the Console environment,
+            False if its I/Os are redirected to another application.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessorEnvironment.RunningMode">
+      <summary>
+            Gets the running mode the CommandProcessor instance was started in.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessorEnvironment.Variables">
+      <summary>
+            Gets a dictionary of the variables defined in the CommandProcessor.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.CommandProcessorEventArgs">
+      <summary>
+            Represents the argument that is passed to the CommandProcessor events.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.CommandProcessorEventArgs.#ctor(Eclair.Commands.CommandProcessorEnvironment)">
+      <summary>
+            Initializes a new instance of the CommandProcessorEventArgs class.
+            </summary>
+      <param name="environment">The processor's current environment.</param>
+    </member>
+    <member name="P:Eclair.Commands.CommandProcessorEventArgs.Environment">
+      <summary>
+             Gets the processor's current environment.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.CommandProcessorRunningMode">
+      <summary>
+            Defines the modes in which a CommandProcessor instance may be running under.
+            </summary>
+    </member>
+    <member name="F:Eclair.Commands.CommandProcessorRunningMode.Batch">
+      <summary>
+            Indicates that the command processor is running batches of commands, passed through command line arguments of a via a script.
+            In this mode, command that wait for an interaction by the end user should be disabled.
+            </summary>
+    </member>
+    <member name="F:Eclair.Commands.CommandProcessorRunningMode.Interactive">
+      <summary>
+            Indicates that the command processor is running interactively, executing commands as they are entered by the end user.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.ExecutionContextFactory">
+      <summary>
+            A factory used to build execution context objects, which govern the behaviour of ECLAIR commands at runtime.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.ExecutionContextFactory.CancelPending">
+      <summary>
+            Returns true if cancellation has been signaled.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.ExecutionContextFactory.Instance">
+      <summary>
+            The singleton instance for the factory.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.ExecutionContextFactory.SignalCancel">
+      <summary>
+            Sends a cancel signal to the execution context. 
+            </summary>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Eclair.Commands.ExecutionContextFactory.SignalCancel</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="P:Eclair.Commands.ExecutionContextFactory.SyncRoot">
+      <summary>
+            An object that can be used to synchronize concurrent access to the factory's methods and properties.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.ExecutionContextFactory.CancelableExecutionContext">
+      <summary>
+            Represents a ECLAIR command execution context under which a command can be signaled to cancel its execution.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.ExecutionContextFactory.CancelableExecutionContext.Create">
+      <summary>
+            Creates a new instance of the CancelableExecutionContext class.
+            </summary>
+      <returns>The newly created CancelableExecutionContext instance.</returns>
+    </member>
+    <member name="M:Eclair.Commands.ExecutionContextFactory.CancelableExecutionContext.Dispose">
+      <summary>
+            Disposes of the CancelableExecutionContext instance.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.ExecutionContextFactory.CancelableExecutionContext.Dispose(System.Boolean)">
+      <summary>
+            Disposes of the CancelableExecutionContext instance.
+            </summary>
+      <param name="disposing">True if managed resources should be disposed.</param>
+    </member>
+    <member name="T:Eclair.Commands.IClientProxy">
+      <summary>
+            Defines connection management methods and properties a client proxy class must implement to be used by ECLAIR.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.IClientProxy.ClientInstance">
+      <summary>
+            Gets the actual instance of the client object wrapped by the proxy.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.IClientProxy.Connect(System.Collections.Generic.List{System.String})">
+      <summary>
+            Establishes the connection to a server.
+            </summary>
+      <param name="args">The arguments that specifies the connection.</param>
+    </member>
+    <member name="P:Eclair.Commands.IClientProxy.ConnectedUser">
+      <summary>
+            Gets the name of the user logged into the server.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.IClientProxy.Disconnect">
+      <summary>
+            Disconnects from the server.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.IClientProxy.IsLoggedIn">
+      <summary>
+            Returns true if the client is logged into a server, false otherwise.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.IClientProxy.LoggedWithWindowsSession">
+      <summary>
+            Returns true if login was established using integrated Windows authentication, false otherwise.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.IClientProxy.ServerList">
+      <summary>
+            Gets the list of server the client is connected to.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.IClientProxyFactory">
+      <summary>
+            Defines the creation methods a client proxy factory must implement.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.IClientProxyFactory.CreateProxy">
+      <summary>
+            Creates a new instance of the client proxy class.
+            </summary>
+      <returns>The newly created instance.</returns>
+    </member>
+    <member name="T:Eclair.Commands.ICommand">
+      <summary>
+            Defines methods and properties that a class representing a ECLAIR command must implement.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.ICommand.CommandInfo">
+      <summary>
+            Gets the properties of the command.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.ICommand.Execute(Eclair.Commands.CommandContext)">
+      <summary>
+            Execute the logic implemented for the specified ECLAIR command.
+            </summary>
+      <param name="context">A CommandContext object that provides the execution context under which the command logic is running.</param>
+    </member>
+    <member name="M:Eclair.Commands.ICommand.Execute(Eclair.Commands.CommandContext,System.Collections.Generic.List{System.String}@)">
+      <summary>
+            Execute the logic implemented for the specified ECLAIR command.
+            </summary>
+      <param name="context">A CommandContext object that provides the execution context under which the command logic is running.</param>
+      <param name="results">A list of string into which the output of the command will be stored.</param>
+    </member>
+    <member name="M:Eclair.Commands.ICommand.Execute(Eclair.Commands.CommandContext,System.String)">
+      <summary>
+            Execute the logic implemented for the specified ECLAIR command. 
+            </summary>
+      <param name="context">A CommandContext object that provides the execution context under which the command logic is running.</param>
+      <param name="outputFile">The path to a file into which the output of the command will be redirected.</param>
+    </member>
+    <member name="T:Eclair.Commands.NullClientProxy">
+      <summary>
+            Represents a dummy client proxy, that doesn't connect to a server.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.NullClientProxy.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.NullClientProxy</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Eclair.Commands.NullClientProxy.ClientInstance">
+      <summary>
+            Always returns null.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.NullClientProxy.Connect(System.Collections.Generic.List{System.String})">
+      <summary>
+            Throws a NotImplementedException.
+            </summary>
+      <param name="args">The arguments that specifies the connection.</param>
+    </member>
+    <member name="P:Eclair.Commands.NullClientProxy.ConnectedUser">
+      <summary>
+             Always returns an empty string.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.NullClientProxy.Disconnect">
+      <summary>
+            Throws a NotImplementedException.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.NullClientProxy.Dispose">
+      <summary>
+            Disposes the current instance.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.NullClientProxy.IsLoggedIn">
+      <summary>
+            Always returns false.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.NullClientProxy.LoggedWithWindowsSession">
+      <summary>
+            Always returns false. 
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.NullClientProxy.ServerList">
+      <summary>
+            Always returns an empty string.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.NullClientProxyFactory">
+      <summary>
+            Defines a factory for NullClientProxy objects.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.NullClientProxyFactory.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.NullClientProxyFactory</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.NullClientProxyFactory.CreateProxy">
+      <summary>
+            Initializes and returns a new instance of the NullClientProxy class.
+            </summary>
+      <returns>A new instance of the NullClientProxy class.</returns>
+    </member>
+    <member name="T:Eclair.Commands.PersistentListManager">
+      <summary>
+            Provides methods to create and manage collections that can be stored to disk in order to remain persistent in between executions of a process.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.PersistentListManager.Flush">
+      <summary>
+            Flushes all PersistentList instances to persistent storage.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.PersistentListManager.GetList(System.String)">
+      <summary>
+            Retrieve the PersistentList instance identified by the specified key.
+            </summary>
+      <param name="key">The key specifying the PersistentList instance to retrieve.</param>
+      <returns>The PersistentList instance identified by the specified key.</returns>
+    </member>
+    <member name="P:Eclair.Commands.PersistentListManager.Instance">
+      <summary>
+            Gets the singleton instance of the PersistentListManager class.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.PersistentListManager.PersistentList">
+      <summary>
+            Represent a collection that can be stored to disk in order to remain persistent in between executions of a process.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.PersistentListManager.PersistentList.#ctor">
+      <summary>
+            Initializes a new instance of the PersistentList class.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.PersistentListManager.PersistentList.CleanUp">
+      <summary>
+            Removes the expired items in the collection.
+            </summary>
+      <returns>The number of items removed.</returns>
+    </member>
+    <member name="M:Eclair.Commands.PersistentListManager.PersistentList.Clear">
+      <summary>
+            Removes all keys and values from the PersistentList instance.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.PersistentListManager.PersistentList.Contains(System.String)">
+      <summary>
+            Specifies whether of not the collection contains an item for the specified key.
+            </summary>
+      <param name="key">The key of the items to check.</param>
+      <returns>True if the collection contains an item for the specified key, False otherwise.</returns>
+    </member>
+    <member name="P:Eclair.Commands.PersistentListManager.PersistentList.Count">
+      <summary>
+            Gets the number of items contained in the PersistentList instance.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.PersistentListManager.PersistentList.Item(System.String)">
+      <summary>
+            Returns the value corresponding to the specified key.
+            </summary>
+      <param name="key">The key that identifies the value to return.</param>
+      <returns>The value corresponding to the specified key.</returns>
+    </member>
+    <member name="P:Eclair.Commands.PersistentListManager.PersistentList.SyncRoot">
+      <summary>
+            An object that can be used to synchronize concurrent access to the PersistentList instance's methods and properties.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.RunCommandContext">
+      <summary>
+            Represents a specific command execution context for the SHELL\RUN command.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.RunCommandContext.#ctor(Eclair.Commands.CommandProcessor,System.Boolean,Eclair.Commands.CommandContext)">
+      <summary>
+            Initializes a new instance of the RunCommandContext class.
+            </summary>
+      <param name="commandProcessor">The current CommandProcessor instance.</param>
+      <param name="isOutputDiffered">True if output should be differed, False otherwise.</param>
+      <param name="context">The parent command's execution context. </param>
+    </member>
+    <member name="P:Eclair.Commands.RunCommandContext.CommandProcessor">
+      <summary>
+            Gets the current CommandProcessor instance.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.RunCommandContext.IsOutputDiffered">
+      <summary>
+            Returns True is output are differed, False is output are sent to the console.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.Debug.CpuIntensiveCommand">
+      <summary>
+            Represents a command that throws an exception.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Debug.CpuIntensiveCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Debug.CpuIntensiveCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Debug.CpuIntensiveCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Debug.GcCommand">
+      <summary>
+            Represents a command that forces a garbage collection
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Debug.GcCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Debug.GcCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Debug.GcCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Debug.GetTempFolderCommand">
+      <summary>
+            Represents a command that throws an exception.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Debug.GetTempFolderCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Debug.GetTempFolderCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Debug.GetTempFolderCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Debug.HideDebugCommand">
+      <summary>
+            Represents a command that hides debug messages in terminal output.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Debug.HideDebugCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Debug.HideDebugCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Debug.HideDebugCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Debug.ParseCommand">
+      <summary>
+            Represents a command that tests the line parser.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Debug.ParseCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Debug.ParseCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Debug.ParseCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Debug.ShowDebugCommand">
+      <summary>
+            Represents a command that shows debug messages in terminal output.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Debug.ShowDebugCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Debug.ShowDebugCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Debug.ShowDebugCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Debug.ThrowCommand">
+      <summary>
+            Represents a command that throws an exception.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Debug.ThrowCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Debug.ThrowCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Debug.ThrowCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.FileSystem.FailSafeFileBrowser">
+      <summary>
+            Provides static methods to enumerate or return a list of all files in a folder and its sub folder recursively, 
+            without getting interrupted when UnauthorizedAccessException, PathTooLongException, DirectoryNotFoundException or
+            SecurityException are thrown while browsing through files and folders.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.FailSafeFileBrowser.EnumerateFiles(System.String,System.String)">
+      <summary>
+            Returns an enumerable collection of file names that match a search pattern in a specified path, 
+             and searches in all its sub folders.
+            </summary>
+      <param name="path">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
+      <param name="searchPattern">
+            The search string to match against the names of files in path. This parameter can contain
+            a combination of valid literal path and wild card (* and ?) characters, but doesn't support regular expressions.
+            </param>
+      <returns>
+            An enumerable collection of the full names (including paths) for the files in the directory
+            specified by path and that match the specified search pattern and option. 
+            </returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.FailSafeFileBrowser.EnumerateFiles(System.String,System.String,Eclair.Commands.FileSystem.HandleNonFatalException)">
+      <summary>
+            Returns an enumerable collection of file names that match a search pattern in a specified path, 
+            and searches in all its sub folders.
+            </summary>
+      <param name="path">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
+      <param name="searchPattern">
+            The search string to match against the names of files in path. This parameter can contain
+            a combination of valid literal path and wild card (* and ?) characters, but doesn't support regular expressions.
+            </param>
+      <param name="errorHandler">The delegate that is invoked when a non fatal exception is thrown.</param>
+      <returns>
+            An enumerable collection of the full names (including paths) for the files in the directory
+            specified by path and that match the specified search pattern and option. 
+            </returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.FailSafeFileBrowser.GetFiles(System.String,System.String)">
+      <summary>
+            Returns an array of file names that match a search pattern in a specified path, and searches in all its sub folders.
+            </summary>
+      <param name="path">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
+      <param name="searchPattern">
+            The search string to match against the names of files in path. This parameter can contain
+            a combination of valid literal path and wild card (* and ?) characters, but doesn't support regular expressions.
+            </param>
+      <returns>
+            An array of the full names (including paths) for the files in the directory
+            specified by path and that match the specified search pattern and option. 
+            </returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.FailSafeFileBrowser.GetFiles(System.String,System.String,Eclair.Commands.FileSystem.HandleNonFatalException)">
+      <summary>
+            Returns an array of file names that match a search pattern in a specified path, and searches in all its sub folders.
+            </summary>
+      <param name="path">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
+      <param name="searchPattern">
+            The search string to match against the names of files in path. This parameter can contain
+            a combination of valid literal path and wild card (* and ?) characters, but doesn't support regular expressions.
+            </param>
+      <param name="errorHandler">The delegate that is invoked when a non fatal exception is thrown.</param>
+      <returns>
+            An array of the full names (including paths) for the files in the directory
+            specified by path and that match the specified search pattern and option. 
+            </returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.FailSafeFileBrowser.LongPathEnumerateFiles(System.String,System.String)">
+      <summary>
+            Returns an enumerable collection of file names that match a search pattern in a specified path, 
+             and searches in all its sub folders.
+            <para>
+            This methods is capable of enumeratingFiles files with path longer than 260 characters, up to 32000 character.
+            </para></summary>
+      <param name="path">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
+      <param name="searchPattern">
+            The search string to match against the names of files in path. This parameter can contain
+            a combination of valid literal path and wild card (* and ?) characters, but doesn't support regular expressions.
+            </param>
+      <returns>
+            An enumerable collection of the full names (including paths) for the files in the directory
+            specified by path and that match the specified search pattern and option. 
+            </returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.FailSafeFileBrowser.LongPathEnumerateFiles(System.String,System.String,Eclair.Commands.FileSystem.HandleNonFatalException)">
+      <summary>
+            Returns an enumerable collection of file names that match a search pattern in a specified path, 
+            and searches in all its sub folders.
+            <para>
+            This methods is capable of enumeratingFiles files with path longer than 260 characters, up to 32000 character.
+            </para></summary>
+      <param name="path">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
+      <param name="searchPattern">
+            The search string to match against the names of files in path. This parameter can contain
+            a combination of valid literal path and wild card (* and ?) characters, but doesn't support regular expressions.
+            </param>
+      <param name="errorHandler">The delegate that is invoked when a non fatal exception is thrown.</param>
+      <returns>
+            An enumerable collection of the full names (including paths) for the files in the directory
+            specified by path and that match the specified search pattern and option. 
+            </returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.FailSafeFileBrowser.PathMatchesSearchPattern(System.String,System.String,System.Boolean)">
+      <summary>
+            Determines whether the specified path matches the specified search pattern string. 
+            A search pattern can contain '*' and '?' wildcards, i.e. *.txt, *.*, c:\h?llo.txt, etc...
+            </summary>
+      <param name="searchPattern">The search pattern to match.</param>
+      <param name="path">The path to compare.</param>
+      <param name="caseSensitive">Set to true if the comparison should be case sensitive, false otherwise.</param>
+      <returns>True if the provided path matches the provided search pattern, false otherwise.</returns>
+    </member>
+    <member name="T:Eclair.Commands.FileSystem.FileSystemScanCommandBase">
+      <summary>
+            Provides a base implementation for commands whose execution revolves around scanning through a file system
+            and apply the same operations to all of the retrieved files. This is an abstract class.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.FileSystemScanCommandBase.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.FileSystem.FileSystemScanCommandBase</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Eclair.Commands.FileSystem.FileSystemScanCommandBase.CanDoParallelProcessing">
+      <summary>
+            Gets or sets a value indicating whether the command supports processing its load on multiple threads.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.FileSystem.FileSystemScanCommandBase.CanProcessFiles">
+      <summary>
+            Gets or sets a value indicating whether the command accepts a single file to be passed as an argument. 
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.FileSystem.FileSystemScanCommandBase.CanProcessFolders">
+      <summary>
+            Gets or sets a value indicating whether the command accepts a folder to be passed as an argument. 
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.FileSystem.FileSystemScanCommandBase.DefaultSearchPattern">
+      <summary>
+            Gets or sets the search string to match against the names of files in the provided path.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.FileSystemScanCommandBase.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="context">The execution context of the current CommandProcessor instance.</param>
+      <exception cref="T:Eclair.Exceptions.MaxErrorReachedException">
+            The maximum number of non fatal exception allowed has been reached.
+            </exception>
+    </member>
+    <member name="P:Eclair.Commands.FileSystem.FileSystemScanCommandBase.IOHelper">
+      <summary>
+            An object implementing IIOHelper, that defines methods to manipulate files and directories.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.FileSystem.FileSystemScanCommandBase.IsParallelEnabled">
+      <summary>
+            Gets or sets a value indicating whether parallel processing on multiple threads is enabled for the 
+            current execution of the command.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.FileSystem.FileSystemScanCommandBase.IsVerbose">
+      <summary>
+            Gets or sets a value indicating whether detailed messages should be logged.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.FileSystem.FileSystemScanCommandBase.MaxErrorNumber">
+      <summary>
+            Gets or sets the maximum number of non fatal exceptions that the command will accept before it stops.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.FileSystemScanCommandBase.ParseExtraParameters(Eclair.Commands.CommandContext)">
+      <summary>
+            Classes deriving from FileSystemScanCommandBase can override this method to parse extra arguments.
+            </summary>
+      <param name="context">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="P:Eclair.Commands.FileSystem.FileSystemScanCommandBase.PathList">
+      <summary>
+            Gets or sets the list of paths provided as arguments to the command.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.FileSystemScanCommandBase.ProcessFile(System.String)">
+      <summary>
+            Implements the core logic for processing a single file. Deriving classes must provided their own implementation.
+            </summary>
+      <param name="sourcePath">The path to the file to process.</param>
+      <returns>The number of file successfully processed.</returns>
+    </member>
+    <member name="P:Eclair.Commands.FileSystem.FileSystemScanCommandBase.QueueMaxCapacity">
+      <summary>
+            The capacity of the concurrent queue used to synchronize consumer and producer tasks.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.FileSystem.FileSystemScanCommandBase.WorkerCount">
+      <summary>
+            The number of worker threads spawned to process files.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.FileSystem.HandleNonFatalException">
+      <summary>
+            Delegate for handling non fatal exception thrown during the execution of a command. 
+            </summary>
+      <param name="exception">The exception to handle</param>
+      <param name="message">The message to log.</param>
+    </member>
+    <member name="T:Eclair.Commands.FileSystem.IIOHelper">
+      <summary>
+            Defines methods to abstract manipulations of paths, files and directories.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.IIOHelper.ChangeExtension(System.String,System.String)">
+      <summary>
+            Changes the extension of a path string.
+            </summary>
+      <param name="path">The path information to modify.</param>
+      <param name="extention">The new extension (with or without a leading period).</param>
+      <returns>The modified path information.</returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.IIOHelper.DirectoryCreate(System.String)">
+      <summary>
+            Creates all directories and subdirectories in the specified path.
+            </summary>
+      <param name="path">The directory path to create.</param>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.IIOHelper.DirectoryDelete(System.String)">
+      <summary>
+            Deletes an empty directory from a specified path.
+            </summary>
+      <param name="path">The name of the empty directory to remove. </param>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.IIOHelper.DirectoryExists(System.String)">
+      <summary>
+            Determines whether the given path refers to an existing directory on disk.
+            </summary>
+      <param name="path">The path to test.</param>
+      <returns>true if path refers to an existing directory; otherwise, false.</returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.IIOHelper.EnumerateFiles(System.String,System.String,Eclair.Commands.FileSystem.HandleNonFatalException)">
+      <summary>
+            Returns an enumerable collection of file names that match a search pattern in a specified path, 
+            and searches in all its sub folders.
+            </summary>
+      <param name="path">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
+      <param name="searchPattern">
+            The search string to match against the names of files in path. This parameter can contain
+            a combination of valid literal path and wildcard (* and ?) characters, but doesn't support regular expressions.
+            </param>
+      <param name="errorHandler">The delegate that is invoked when a non fatal exception is thrown.</param>
+      <returns>
+            An enumerable collection of the full names (including paths) for the files in the directory
+            specified by path and that match the specified search pattern and option. 
+            </returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.IIOHelper.FileDelete(System.String)">
+      <summary>
+             Deletes the specified file.
+            </summary>
+      <param name="path"> The name of the file to be deleted. Wildcard characters are not supported.</param>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.IIOHelper.FileExists(System.String)">
+      <summary>
+             Determines whether the specified file exists.
+            </summary>
+      <param name="path">The file to check.</param>
+      <returns>true if the caller has the required permissions and path contains the name of an existing file; otherwise, false. 
+             </returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.IIOHelper.FileOpen(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare)">
+      <summary>
+            Opens a System.IO.FileStream on the specified path, having the specified
+            mode with read, write, or read/write access and the specified sharing option.       
+            </summary>
+      <param name="path">The file to open.</param>
+      <param name="mode"> 
+            A System.IO.FileMode value that specifies whether a file is created if one
+            does not exist, and determines whether the contents of existing files are
+            retained or overwritten.
+            </param>
+      <param name="access">A System.IO.FileAccess value that specifies the operations that can be performed on the file.</param>
+      <param name="share">A System.IO.FileShare value specifying the type of access other threads have to the file.</param>
+      <returns>A System.IO.FileStream on the specified path, having the specified mode with read, write, or read/write access and the specified sharing option.</returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.IIOHelper.GetAllPathFromArguments(System.Collections.Generic.IEnumerable{System.String})">
+      <summary>
+              Returns a list of paths from the specified string enumerable.
+             </summary>
+      <param name="cmdLines">The IEnumerable&lt;string&gt; to retrieve paths from.</param>
+      <returns>An IEnumerable&lt;string&gt; of all retrieved path.</returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.IIOHelper.GetDirectoryName(System.String)">
+      <summary>
+            Returns the directory information for the specified path string.
+            </summary>
+      <param name="path">The path of a file or directory.</param>
+      <returns>
+            Directory information for path, or null if path denotes a root directory
+            or is null. Returns System.String.Empty if path does not contain directory information.
+            </returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.IIOHelper.GetFileName(System.String)">
+      <summary>
+             Returns the file name and extension of the specified path string.
+            </summary>
+      <param name="path">The path string from which to obtain the file name and extension.</param>
+      <returns> The characters after the last directory character in path.</returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.IIOHelper.IsPathRooted(System.String)">
+      <summary>
+            Gets a value indicating whether the specified path string contains a root.
+            </summary>
+      <param name="path">The path to test.</param>
+      <returns>true if path contains a root; otherwise, false.</returns>
+    </member>
+    <member name="T:Eclair.Commands.FileSystem.LongPathIOHelper">
+      <summary>
+            An implementation of <see cref="T:Eclair.Commands.FileSystem.IIOHelper" /> that uses Unicode version of the Win32 API to manipulate files and directories,
+            alongside the use of the "\\?\" prefix, in order to bypass the limitation to 260 characters for paths to file system objects.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.LongPathIOHelper.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.FileSystem.LongPathIOHelper</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.LongPathIOHelper.ChangeExtension(System.String,System.String)">
+      <summary>
+            Changes the extension of a path string.
+            </summary>
+      <param name="path">The path information to modify.</param>
+      <param name="extention">The new extension (with or without a leading period).</param>
+      <returns>The modified path information.</returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.LongPathIOHelper.DirectoryCreate(System.String)">
+      <summary>
+            Creates all directories and subdirectories in the specified path.
+            </summary>
+      <param name="path">The directory path to create.</param>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.LongPathIOHelper.DirectoryDelete(System.String)">
+      <summary>
+            Deletes an empty directory from a specified path.
+            </summary>
+      <param name="path">The name of the empty directory to remove. </param>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.LongPathIOHelper.DirectoryExists(System.String)">
+      <summary>
+            Determines whether the given path refers to an existing directory on disk.
+            </summary>
+      <param name="path">The path to test.</param>
+      <returns>true if path refers to an existing directory; otherwise, false.</returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.LongPathIOHelper.EnumerateFiles(System.String,System.String,Eclair.Commands.FileSystem.HandleNonFatalException)">
+      <summary>
+            Returns an enumerable collection of file names that match a search pattern in a specified path, 
+            and searches in all its sub folders.
+            </summary>
+      <param name="path">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
+      <param name="searchPattern">
+            The search string to match against the names of files in path. This parameter can contain
+            a combination of valid literal path and wildcard (* and ?) characters, but doesn't support regular expressions.
+            </param>
+      <param name="errorHandler">The delegate that is invoked when a non fatal exception is thrown.</param>
+      <returns>
+            An enumerable collection of the full names (including paths) for the files in the directory
+            specified by path and that match the specified search pattern and option. 
+            </returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.LongPathIOHelper.FileDelete(System.String)">
+      <summary>
+             Deletes the specified file.
+            </summary>
+      <param name="path"> The name of the file to be deleted. Wildcard characters are not supported.</param>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.LongPathIOHelper.FileExists(System.String)">
+      <summary>
+             Determines whether the specified file exists.
+            </summary>
+      <param name="path">The file to check.</param>
+      <returns>true if the caller has the required permissions and path contains the name of an existing file; otherwise, false. 
+             </returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.LongPathIOHelper.FileOpen(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare)">
+      <summary>
+            Opens a System.IO.FileStream on the specified path, having the specified
+            mode with read, write, or read/write access and the specified sharing option.       
+            </summary>
+      <param name="path">The file to open.</param>
+      <param name="mode"> 
+            A System.IO.FileMode value that specifies whether a file is created if one
+            does not exist, and determines whether the contents of existing files are
+            retained or overwritten.
+            </param>
+      <param name="access">A System.IO.FileAccess value that specifies the operations that can be performed on the file.</param>
+      <param name="share">A System.IO.FileShare value specifying the type of access other threads have to the file.</param>
+      <returns>A System.IO.FileStream on the specified path, having the specified mode with read, write, or read/write access and the specified sharing option.</returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.LongPathIOHelper.GetAllPathFromArguments(System.Collections.Generic.IEnumerable{System.String})">
+      <summary>
+              Returns a list of paths from the specified string enumerable.
+             </summary>
+      <param name="cmdLines">The IEnumerable&lt;string&gt; to retrieve paths from.</param>
+      <returns>An IEnumerable&lt;string&gt; of all retrieved path.</returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.LongPathIOHelper.GetDirectoryName(System.String)">
+      <summary>
+            Returns the directory information for the specified path string.
+            </summary>
+      <param name="path">The path of a file or directory.</param>
+      <returns>
+            Directory information for path, or null if path denotes a root directory
+            or is null. Returns System.String.Empty if path does not contain directory information.
+            </returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.LongPathIOHelper.GetFileName(System.String)">
+      <summary>
+             Returns the file name and extension of the specified path string.
+            </summary>
+      <param name="path">The path string from which to obtain the file name and extension.</param>
+      <returns> The characters after the last directory character in path.</returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.LongPathIOHelper.IsPathRooted(System.String)">
+      <summary>
+            Gets a value indicating whether the specified path string contains a root.
+            </summary>
+      <param name="path">The path to test.</param>
+      <returns>true if path contains a root; otherwise, false.</returns>
+    </member>
+    <member name="T:Eclair.Commands.FileSystem.StandardIOHelper">
+      <summary>
+            An implementation of <see cref="T:Eclair.Commands.FileSystem.IIOHelper" /> based objects and methods from the System.IO namespace.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.StandardIOHelper.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.FileSystem.StandardIOHelper</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.StandardIOHelper.ChangeExtension(System.String,System.String)">
+      <summary>
+            Changes the extension of a path string.
+            </summary>
+      <param name="path">The path information to modify.</param>
+      <param name="extention">The new extension (with or without a leading period).</param>
+      <returns>The modified path information.</returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.StandardIOHelper.DirectoryCreate(System.String)">
+      <summary>
+            Creates all directories and subdirectories in the specified path.
+            </summary>
+      <param name="path">The directory path to create.</param>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.StandardIOHelper.DirectoryDelete(System.String)">
+      <summary>
+            Deletes an empty directory from a specified path.
+            </summary>
+      <param name="path">The name of the empty directory to remove. </param>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.StandardIOHelper.DirectoryExists(System.String)">
+      <summary>
+            Determines whether the given path refers to an existing directory on disk.
+            </summary>
+      <param name="path">The path to test.</param>
+      <returns>true if path refers to an existing directory; otherwise, false.</returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.StandardIOHelper.EnumerateFiles(System.String,System.String,Eclair.Commands.FileSystem.HandleNonFatalException)">
+      <summary>
+            Returns an enumerable collection of file names that match a search pattern in a specified path, 
+            and searches in all its sub folders.
+            </summary>
+      <param name="path">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
+      <param name="searchPattern">
+            The search string to match against the names of files in path. This parameter can contain
+            a combination of valid literal path and wildcard (* and ?) characters, but doesn't support regular expressions.
+            </param>
+      <param name="errorHandler">The delegate that is invoked when a non fatal exception is thrown.</param>
+      <returns>
+            An enumerable collection of the full names (including paths) for the files in the directory
+            specified by path and that match the specified search pattern and option. 
+            </returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.StandardIOHelper.FileDelete(System.String)">
+      <summary>
+             Deletes the specified file.
+            </summary>
+      <param name="path"> The name of the file to be deleted. Wildcard characters are not supported.</param>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.StandardIOHelper.FileExists(System.String)">
+      <summary>
+             Determines whether the specified file exists.
+            </summary>
+      <param name="path">The file to check.</param>
+      <returns>true if the caller has the required permissions and path contains the name of an existing file; otherwise, false. 
+             </returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.StandardIOHelper.FileOpen(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare)">
+      <summary>
+            Opens a System.IO.FileStream on the specified path, having the specified
+            mode with read, write, or read/write access and the specified sharing option.       
+            </summary>
+      <param name="path">The file to open.</param>
+      <param name="mode"> 
+            A System.IO.FileMode value that specifies whether a file is created if one
+            does not exist, and determines whether the contents of existing files are
+            retained or overwritten.
+            </param>
+      <param name="access">A System.IO.FileAccess value that specifies the operations that can be performed on the file.</param>
+      <param name="share">A System.IO.FileShare value specifying the type of access other threads have to the file.</param>
+      <returns>A System.IO.FileStream on the specified path, having the specified mode with read, write, or read/write access and the specified sharing option.</returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.StandardIOHelper.GetAllPathFromArguments(System.Collections.Generic.IEnumerable{System.String})">
+      <summary>
+              Returns a list of paths from the specified string enumerable.
+             </summary>
+      <param name="cmdLines">The IEnumerable&lt;string&gt; to retrieve paths from.</param>
+      <returns>An IEnumerable&lt;string&gt; of all retrieved path.</returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.StandardIOHelper.GetDirectoryName(System.String)">
+      <summary>
+            Returns the directory information for the specified path string.
+            </summary>
+      <param name="path">The path of a file or directory.</param>
+      <returns>
+            Directory information for path, or null if path denotes a root directory
+            or is null. Returns System.String.Empty if path does not contain directory information.
+            </returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.StandardIOHelper.GetFileName(System.String)">
+      <summary>
+             Returns the file name and extension of the specified path string.
+            </summary>
+      <param name="path">The path string from which to obtain the file name and extension.</param>
+      <returns> The characters after the last directory character in path.</returns>
+    </member>
+    <member name="M:Eclair.Commands.FileSystem.StandardIOHelper.IsPathRooted(System.String)">
+      <summary>
+            Gets a value indicating whether the specified path string contains a root.
+            </summary>
+      <param name="path">The path to test.</param>
+      <returns>true if path contains a root; otherwise, false.</returns>
+    </member>
+    <member name="T:Eclair.Commands.Global.ChangeCategoryAlias">
+      <summary>
+            Defines an alias to the "Change category" command.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.ChangeCategoryAlias.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Global.ChangeCategoryAlias</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="T:Eclair.Commands.Global.ChangeCategoryCommand">
+      <summary>
+            Represents a command that changes the current category.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.ChangeCategoryCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Global.ChangeCategoryCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.ChangeCategoryCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="context">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Global.ClsCommand">
+      <summary>
+            Represents a command that clears the console.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.ClsCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Global.ClsCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.ClsCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="context">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Global.ConcatCommand">
+      <summary>
+            Represents a command that concatenates two strings.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.ConcatCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Global.ConcatCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.ConcatCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Global.CountCommand">
+      <summary>
+            Represents a command that counts the number of elements returned by a command.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.CountCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Global.CountCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.CountCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Global.EchoCommand">
+      <summary>
+            Represents a command that writes a message to output channel.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.EchoCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Global.EchoCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.EchoCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Global.ExitCommand">
+      <summary>
+            Represents a command that terminates the shell when running in interactive mode.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.ExitCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Global.ExitCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.ExitCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Global.FilterByDateCommand">
+      <summary>
+            Represents a command that filters the input based on a date.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.FilterByDateCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Global.FilterByDateCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.FilterByDateCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Global.GrepCommand">
+      <summary>
+            Represents a command that sorts a command output according to a regular expression.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.GrepCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Global.GrepCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.GrepCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Global.HelpCommand">
+      <summary>
+            Represents a command that shows in-line help.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.HelpCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Global.HelpCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.HelpCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Global.LimitCommand">
+      <summary>
+            Represents a command that limits the number of elements returned by a command.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.LimitCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Global.LimitCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.LimitCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Global.LoadCommand">
+      <summary>
+            Represents a command that loads a command library and register all available commands.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.LoadCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Global.LoadCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.LoadCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Global.MoreCommand">
+      <summary>
+            Represents a command that pages through the output of a piped command.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.MoreCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Global.MoreCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.MoreCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Global.SetVarCommand">
+      <summary>
+            Represents a command that sets a variable's value.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.SetVarCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Global.SetVarCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.SetVarCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Global.VersionCommand">
+      <summary>
+            Represents a command that displays version information for all the loaded modules.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.VersionCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Global.VersionCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Global.VersionCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Scripting.OnErrorCommand">
+      <summary>
+            Represents a command that defines the behaviour of the script in case of an error is encountered
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Scripting.OnErrorCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Scripting.OnErrorCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Scripting.OnErrorCommand.FlowControlExecute(Eclair.Commands.Scripting.ScriptCommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor when the command is executed from a script.
+            </summary>
+      <param name="fc">The execution context of the script executed and the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Scripting.PauseCommand">
+      <summary>
+            Represents a command that pauses the execution of a script until the end user presses a key.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Scripting.PauseCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Scripting.PauseCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Scripting.PauseCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Scripting.RemCommand">
+      <summary>
+            Represents a command that comments a line in a script.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Scripting.RemCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Scripting.RemCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Scripting.RemCommand.FlowControlExecute(Eclair.Commands.Scripting.ScriptCommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor when the command is executed from a script.
+            </summary>
+      <param name="fc">The execution context of the script executed and the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Scripting.RunCommand">
+      <summary>
+            Represents a command that runs a script file.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Scripting.RunCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Scripting.RunCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Scripting.RunCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="args">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Scripting.ScriptCommandBase">
+      <summary>
+            Provides the base class for commands that can only by executed from a scripts.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Scripting.ScriptCommandBase.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Scripting.ScriptCommandBase</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Scripting.ScriptCommandBase.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor when the command is executed from an interactive shell console.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="M:Eclair.Commands.Scripting.ScriptCommandBase.FlowControlExecute(Eclair.Commands.Scripting.ScriptCommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor when the command is executed from a script.
+            </summary>
+      <param name="fc">The execution context of the script executed and the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Scripting.ScriptCommandContext">
+      <summary>
+            Represents a command execution context for commands that affects the control flow of a script.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Scripting.ScriptCommandContext.#ctor(Eclair.Commands.Scripting.ScriptInfo,Eclair.Commands.CommandContext)">
+      <summary>
+            Initializes a new instance of the ScriptCommandContext class.
+            </summary>
+      <param name="scriptContext">The contextual info on the script being run.</param>
+      <param name="c">The base command context.</param>
+    </member>
+    <member name="P:Eclair.Commands.Scripting.ScriptCommandContext.Script">
+      <summary>
+            Gets the contextual info on the script being run.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.Scripting.ScriptInfo">
+      <summary>
+            Defines and holds the properties of a script being executed by the SHELL\RUN command.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Scripting.ScriptInfo.#ctor(System.IO.FileInfo,System.Boolean,System.Collections.Generic.IEnumerator{Eclair.Commands.Scripting.ScriptLine})">
+      <summary>
+            Initializes a new instance of the ScriptInfo class.
+            </summary>
+      <param name="file">The FileInfo associated with the script.</param>
+      <param name="b">The BreakOnError for the script.</param>
+      <param name="e">The enumerator used to navigate the script lines.</param>
+    </member>
+    <member name="P:Eclair.Commands.Scripting.ScriptInfo.BreakOnError">
+      <summary>
+            Gets or sets the BreakOnError for the script.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.Scripting.ScriptInfo.FileInfo">
+      <summary>
+            Gets or sets the FileInfo associated with the script.
+            </summary>
+    </member>
+    <member name="P:Eclair.Commands.Scripting.ScriptInfo.LineEnumerator">
+      <summary>
+            Gets or set the enumerator used to navigate the script lines.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.Scripting.ScriptLine">
+      <summary>
+            A structure that represents a line of script.
+            </summary>
+    </member>
+    <member name="F:Eclair.Commands.Scripting.ScriptLine.Label">
+      <summary>
+            The label associated with the line of script.
+            </summary>
+    </member>
+    <member name="F:Eclair.Commands.Scripting.ScriptLine.Number">
+      <summary>
+            The line number in the script.
+            </summary>
+    </member>
+    <member name="F:Eclair.Commands.Scripting.ScriptLine.StreamPosistion">
+      <summary>
+            The current position in the underlying stream.
+            </summary>
+    </member>
+    <member name="F:Eclair.Commands.Scripting.ScriptLine.Value">
+      <summary>
+            The content of the line of script.
+            </summary>
+    </member>
+    <member name="T:Eclair.Commands.Servers.loginCommand">
+      <summary>
+            Represents a command that attempts to establish a connection to a server.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Servers.loginCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Servers.loginCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Servers.loginCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Commands.Servers.logoutCommand">
+      <summary>
+             Represents a command that closes an existing connection to a server.
+            </summary>
+    </member>
+    <member name="M:Eclair.Commands.Servers.logoutCommand.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Commands.Servers.logoutCommand</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Commands.Servers.logoutCommand.ExecuteCommand(Eclair.Commands.CommandContext)">
+      <summary>
+            The method invoked by the CommandProcessor to start the execution of the command.
+            </summary>
+      <param name="c">The execution context of the current CommandProcessor instance.</param>
+    </member>
+    <member name="T:Eclair.Exceptions.ClientProxyFactoryNullException">
+      <summary>
+            The exception that is thrown when no client proxy factory is available to the CommandProcessor.
+            </summary>
+    </member>
+    <member name="M:Eclair.Exceptions.ClientProxyFactoryNullException.#ctor">
+      <summary>
+            Initializes a new instance of the ClientProxyFactoryNullException class.
+            </summary>
+    </member>
+    <member name="M:Eclair.Exceptions.ClientProxyFactoryNullException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            Initializes a new instance of the ClientProxyFactoryNullException class with serialized data.
+            </summary>
+      <param name="info">The SerializationInfo that holds the serialized object data about the exception being thrown.</param>
+      <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.ClientProxyFactoryNullException.#ctor(System.String)">
+      <summary>
+            Initializes a new instance of the ClientProxyFactoryNullException class.
+            </summary>
+      <param name="message">The error message that explains the reason for the exception.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.ClientProxyFactoryNullException.#ctor(System.String,System.Exception)">
+      <summary>
+            Initializes a new instance of the ClientProxyFactoryNullException class.
+            </summary>
+      <param name="message">The error message that explains the reason for the exception.</param>
+      <param name="innerException">The exception that is the cause of the current exception. </param>
+    </member>
+    <member name="T:Eclair.Exceptions.CommandExecutionException">
+      <summary>
+            The exception that is thrown when an error occurs during the execution of a command
+            </summary>
+    </member>
+    <member name="M:Eclair.Exceptions.CommandExecutionException.#ctor(Eclair.Commands.ICommand)">
+      <summary>
+            Initializes a new instance of the CommandExecutionException class with the command where the error originated.
+            </summary>
+      <param name="command"> the command instance that was being executed when the error occurred.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.CommandExecutionException.#ctor(Eclair.Commands.ICommand,System.String)">
+      <summary>
+            Initializes a new instance of the CommandExecutionException class with the command where the error originated,
+            and a specified error message.
+            </summary>
+      <param name="command"> the command instance that was being executed when the error occurred.</param>
+      <param name="message">The error message that explains the reason for the exception.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.CommandExecutionException.#ctor(Eclair.Commands.ICommand,System.String,System.Exception)">
+      <summary>
+            Initializes a new instance of the CommandExecutionException class with the command where the error originated,
+            a specified error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+      <param name="command">The command instance that was being executed when the error occurred.</param>
+      <param name="message">The error message that explains the reason for the exception.</param>
+      <param name="innerException">The exception that is the cause of the current exception. </param>
+    </member>
+    <member name="M:Eclair.Exceptions.CommandExecutionException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            Initializes a new instance of the CommandExecutionException class with serialized data.
+            </summary>
+      <param name="info">The SerializationInfo that holds the serialized object data about the exception being thrown.</param>
+      <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
+    </member>
+    <member name="F:Eclair.Exceptions.CommandExecutionException.command">
+      <summary>
+            The instance of ICommand in which the error originated.
+            </summary>
+    </member>
+    <member name="P:Eclair.Exceptions.CommandExecutionException.Command">
+      <summary>
+            Gets the command instance that was being executed when the error occurred.
+            </summary>
+    </member>
+    <member name="T:Eclair.Exceptions.CommandLineInterpretationException">
+      <summary>
+            Defines the base class for exceptions thrown during the interpretation and execution of a command by a CommandProcessor instance.
+            </summary>
+    </member>
+    <member name="M:Eclair.Exceptions.CommandLineInterpretationException.#ctor">
+      <summary>
+            Initializes a new instance of the CommandLineInterpretationException class.
+            </summary>
+    </member>
+    <member name="M:Eclair.Exceptions.CommandLineInterpretationException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            Initializes a new instance of the CommandLineInterpretationException class with serialized data.
+            </summary>
+      <param name="info">The SerializationInfo that holds the serialized object data about the exception being thrown.</param>
+      <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.CommandLineInterpretationException.#ctor(System.String)">
+      <summary>
+            Initializes a new instance of the CommandLineInterpretationException class with a specified error message.
+            </summary>
+      <param name="message">The error message that explains the reason for the exception.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.CommandLineInterpretationException.#ctor(System.String,System.Exception)">
+      <summary>
+            Initializes a new instance of the CommandLineInterpretationException class with a specified error message
+            and a reference to the inner exception that is the cause of this exception.
+            </summary>
+      <param name="message">The error message that explains the reason for the exception.</param>
+      <param name="innerException">The exception that is the cause of the current exception. </param>
+    </member>
+    <member name="T:Eclair.Exceptions.CommandSetupException">
+      <summary>
+            The exception that is thrown when an error occurs during the setup of a command.
+            </summary>
+    </member>
+    <member name="M:Eclair.Exceptions.CommandSetupException.#ctor(Eclair.Commands.ICommand,System.String)">
+      <summary>
+            Initializes a new instance of the CommandSetupException class.
+            </summary>
+      <param name="command">The command instance that was being set up when the error occurred.</param>
+      <param name="message">The error message that explains the reason for the exception.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.CommandSetupException.#ctor(Eclair.Commands.ICommand,System.String,System.Exception)">
+      <summary>
+            Initializes a new instance of the CommandSetupException class.
+            </summary>
+      <param name="command">The command instance that was being set up when the error occurred.</param>
+      <param name="message">The error message that explains the reason for the exception.</param>
+      <param name="innerException">The exception that is the cause of the current exception. </param>
+    </member>
+    <member name="M:Eclair.Exceptions.CommandSetupException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            Initializes a new instance of the CommandSetupException class with serialized data.
+            </summary>
+      <param name="info">The SerializationInfo that holds the serialized object data about the exception being thrown.</param>
+      <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
+    </member>
+    <member name="P:Eclair.Exceptions.CommandSetupException.Command">
+      <summary>
+            Gets the command instance that was being set up when the error occurred.
+            </summary>
+    </member>
+    <member name="T:Eclair.Exceptions.MaxErrorReachedException">
+      <summary>
+            The exception that is thrown when the maximum number of tolerated non-fatal exception has been reached.
+            </summary>
+    </member>
+    <member name="M:Eclair.Exceptions.MaxErrorReachedException.#ctor">
+      <summary>
+            Initializes a new instance of the <see cref="T:Eclair.Exceptions.MaxErrorReachedException" /> class with the command where the error originated.
+            </summary>
+    </member>
+    <member name="M:Eclair.Exceptions.MaxErrorReachedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            Initializes a new instance of the  <see cref="T:Eclair.Exceptions.MaxErrorReachedException" /> class with serialized data.
+            </summary>
+      <param name="info">The SerializationInfo that holds the serialized object data about the exception being thrown.</param>
+      <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.MaxErrorReachedException.#ctor(System.String)">
+      <summary>
+            Initializes a new instance of the  <see cref="T:Eclair.Exceptions.MaxErrorReachedException" /> class with the specified error message.
+            </summary>
+      <param name="message">The error message that explains the reason for the exception.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.MaxErrorReachedException.#ctor(System.String,System.Exception)">
+      <summary>
+            Initializes a new instance of the  <see cref="T:Eclair.Exceptions.MaxErrorReachedException" /> class with 
+            the specified error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+      <param name="message">The error message that explains the reason for the exception.</param>
+      <param name="innerException">The exception that is the cause of the current exception. </param>
+    </member>
+    <member name="T:Eclair.Exceptions.OutputRedirectionException">
+      <summary>
+            The exception that is thrown when an error occurs while redirecting the output of a command.
+            </summary>
+    </member>
+    <member name="M:Eclair.Exceptions.OutputRedirectionException.#ctor">
+      <summary>
+            Initializes a new instance of the OutputRedirectionException class.
+            </summary>
+    </member>
+    <member name="M:Eclair.Exceptions.OutputRedirectionException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            Initializes a new instance of the OutputRedirectionException class with serialized data.
+            </summary>
+      <param name="info">The SerializationInfo that holds the serialized object data about the exception being thrown.</param>
+      <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.OutputRedirectionException.#ctor(System.String)">
+      <summary>
+            Initializes a new instance of the OutputRedirectionException class.
+            </summary>
+      <param name="message">The error message that explains the reason for the exception.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.OutputRedirectionException.#ctor(System.String,System.Exception)">
+      <summary>
+            Initializes a new instance of the OutputRedirectionException class.
+            </summary>
+      <param name="message">The error message that explains the reason for the exception.</param>
+      <param name="innerException">The exception that is the cause of the current exception. </param>
+    </member>
+    <member name="T:Eclair.Exceptions.ServerConnectionException">
+      <summary>
+            The exception that is thrown when an error occurs while attempting to connect to an server.
+            </summary>
+    </member>
+    <member name="M:Eclair.Exceptions.ServerConnectionException.#ctor">
+      <summary>
+            Initializes a new instance of the ServerConnectionException class.
+            </summary>
+    </member>
+    <member name="M:Eclair.Exceptions.ServerConnectionException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            Initializes a new instance of the ServerConnectionException class with serialized data.
+            </summary>
+      <param name="info">The SerializationInfo that holds the serialized object data about the exception being thrown.</param>
+      <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.ServerConnectionException.#ctor(System.String)">
+      <summary>
+            Initializes a new instance of the ServerConnectionException class.
+            </summary>
+      <param name="message">The error message that explains the reason for the exception.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.ServerConnectionException.#ctor(System.String,System.Exception)">
+      <summary>
+            Initializes a new instance of the ServerConnectionException class.
+            </summary>
+      <param name="message">The error message that explains the reason for the exception.</param>
+      <param name="innerException">The exception that is the cause of the current exception. </param>
+    </member>
+    <member name="T:Eclair.Exceptions.UnknownCommandException">
+      <summary>
+            The exception that is thrown when the command factory fails to recognize the provided keyword as a registered command.
+            </summary>
+    </member>
+    <member name="M:Eclair.Exceptions.UnknownCommandException.#ctor">
+      <summary>
+            Initializes a new instance of the UnknownCommandException class.
+            </summary>
+    </member>
+    <member name="M:Eclair.Exceptions.UnknownCommandException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            Initializes a new instance of the UnknownCommandException class with serialized data.
+            </summary>
+      <param name="info">The SerializationInfo that holds the serialized object data about the exception being thrown.</param>
+      <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.UnknownCommandException.#ctor(System.String)">
+      <summary>
+            Initializes a new instance of the UnknownCommandException class.
+            </summary>
+      <param name="msg">The error message that explains the reason for the exception.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.UnknownCommandException.#ctor(System.String,System.Exception)">
+      <summary>
+            Initializes a new instance of the UnknownCommandException class.
+            </summary>
+      <param name="message">The error message that explains the reason for the exception.</param>
+      <param name="innerException">The exception that is the cause of the current exception. </param>
+    </member>
+    <member name="T:Eclair.Exceptions.UserAbortedProcessingException">
+      <summary>
+            The Exception that is thrown when the end-user aborts the processing of a command.
+            </summary>
+    </member>
+    <member name="M:Eclair.Exceptions.UserAbortedProcessingException.#ctor(Eclair.Commands.ICommand)">
+      <summary>
+            Initializes a new instance of the UserAbortedProcessingException class with the command where the error originated.
+            </summary>
+      <param name="command"> the command instance that was being executed when the error occurred.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.UserAbortedProcessingException.#ctor(Eclair.Commands.ICommand,System.String)">
+      <summary>
+            Initializes a new instance of the UserAbortedProcessingException class with the command where the error originated,
+            and a specified error message.
+            </summary>
+      <param name="command"> the command instance that was being executed when the error occurred.</param>
+      <param name="message">The error message that explains the reason for the exception.</param>
+    </member>
+    <member name="M:Eclair.Exceptions.UserAbortedProcessingException.#ctor(Eclair.Commands.ICommand,System.String,System.Exception)">
+      <summary>
+            Initializes a new instance of the UserAbortedProcessingException class with the command where the error originated,
+            a specified error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+      <param name="command">The command instance that was being executed when the error occurred.</param>
+      <param name="message">The error message that explains the reason for the exception.</param>
+      <param name="innerException">The exception that is the cause of the current exception. </param>
+    </member>
+    <member name="M:Eclair.Exceptions.UserAbortedProcessingException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            Initializes a new instance of the UserAbortedProcessingException class with serialized data.
+            </summary>
+      <param name="info">The SerializationInfo that holds the serialized object data about the exception being thrown.</param>
+      <param name="context">The StreamingContext that contains contextual information about the source or destination.</param>
+    </member>
+    <member name="T:Eclair.Tools.AssemblyInfoRetriever">
+      <summary>
+            Provides utilities to retrieve information about assemblies.
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.AssemblyInfoRetriever.#ctor(System.Reflection.Assembly)">
+      <summary>
+            Initializes a new instance of the AssemblyInfoRetreiver class for the specified assembly.
+            </summary>
+      <param name="asm">The assembly to retrieve info from.</param>
+    </member>
+    <member name="M:Eclair.Tools.AssemblyInfoRetriever.#ctor(System.String)">
+      <summary>
+            Initializes a new instance of the AssemblyInfoRetreiver class for the assembly loaded from the specified path.
+            </summary>
+      <param name="asmPath">The path where the assembly to load is located.</param>
+    </member>
+    <member name="P:Eclair.Tools.AssemblyInfoRetriever.Copyright">
+      <summary>
+            Gets the assembly copyright information.
+            </summary>
+    </member>
+    <member name="P:Eclair.Tools.AssemblyInfoRetriever.DefaultInstance">
+      <summary>
+            Gets a singleton instance of the AssemblyInfoRetreiver class.
+            </summary>
+    </member>
+    <member name="P:Eclair.Tools.AssemblyInfoRetriever.Description">
+      <summary>
+            Gets the assembly description information.
+            </summary>
+    </member>
+    <member name="P:Eclair.Tools.AssemblyInfoRetriever.FileName">
+      <summary>
+            Gets the location of the assembly as specified originally, for example, in an AssemblyName object.
+            </summary>
+    </member>
+    <member name="P:Eclair.Tools.AssemblyInfoRetriever.FileVersion">
+      <summary>
+            Gets the assembly file version information.
+            </summary>
+    </member>
+    <member name="P:Eclair.Tools.AssemblyInfoRetriever.Location">
+      <summary>
+            Gets the full path or UNC location of the loaded file that contains the manifest.
+            </summary>
+    </member>
+    <member name="P:Eclair.Tools.AssemblyInfoRetriever.Title">
+      <summary>
+            Gets the assembly title information.
+            </summary>
+    </member>
+    <member name="P:Eclair.Tools.AssemblyInfoRetriever.Version">
+      <summary>
+            Gets the major, minor, build, and revision numbers of the assembly. 
+            </summary>
+    </member>
+    <member name="T:Eclair.Tools.CiEqualityComparer">
+      <summary>
+            Provides an implementation of IEqualityComparer for strings that is insensitive to case.
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.CiEqualityComparer.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Tools.CiEqualityComparer</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Tools.CiEqualityComparer.Equals(System.String,System.String)">
+      <summary>
+            Determines whether the two specified strings are equal in case insensitive fashion.
+            </summary>
+      <param name="x">The fist string to compare.</param>
+      <param name="y">the second string to compare.</param>
+      <returns>True is the two strings are equal, false otherwise.</returns>
+    </member>
+    <member name="M:Eclair.Tools.CiEqualityComparer.GetHashCode(System.String)">
+      <summary>
+            Returns the hash code for this string.
+            </summary>
+      <param name="obj">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>obj</parameter>
+            <parameter>M:Eclair.Tools.CiEqualityComparer.GetHashCode(System.String)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Eclair.Tools.CiEqualityComparer.GetHashCode(System.String)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="T:Eclair.Tools.CommandArgsExtension">
+      <summary>
+            Defines extension methods and utilities to manipulate command line arguments. 
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.CommandArgsExtension.ArgumentExists(System.Collections.Generic.IEnumerable{System.String},System.String)">
+      <summary>
+            Returns true if at list one argument with the specified name exists in the list.
+            </summary>
+      <param name="cmdLines">The IEnumerable in which to search for an argument.</param>
+      <param name="name">The name of the argument.</param>
+      <returns>True if the list contains the argument, false otherwise.</returns>
+    </member>
+    <member name="M:Eclair.Tools.CommandArgsExtension.GetAllArguments``1(System.Collections.Generic.IEnumerable{System.String},System.String,System.String)">
+      <summary>
+            Returns all arguments matching the provided expression.
+            </summary>
+      <param name="cmdLines">The IEnumerable from which to retrieve arguments.</param>
+      <param name="name">The name of the argument.</param>
+      <param name="format">A regular expression describing the format of the value to retrieve.</param>
+      <typeparam name="T">The type of the returned argument.</typeparam>
+      <returns>An IEnumerable of type T.</returns>
+    </member>
+    <member name="M:Eclair.Tools.CommandArgsExtension.GetAllPathFromArguments(System.Collections.Generic.IEnumerable{System.String})">
+      <summary>
+            Returns all the arguments that are formated as a rooted path.
+            </summary>
+      <param name="cmdLines">The IEnumerable from which to retrieve arguments.</param>
+      <returns>An IEnumerable of all paths.</returns>
+    </member>
+    <member name="M:Eclair.Tools.CommandArgsExtension.GetFirstArgument``1(System.Collections.Generic.IEnumerable{System.String},System.String,System.String)">
+      <summary>
+            Returns the first argument matching the provided expression.
+            </summary>
+      <param name="cmdLines">The IEnumerable from which to retrieve arguments.</param>
+      <param name="name">The name of the argument.</param>
+      <param name="format">A regular expression describing the format of the value to retrieve.</param>
+      <typeparam name="T">The type of the returned argument.</typeparam>
+      <returns>Default(TSource) if not matching element is found, otherwise, the first matching element in cmdLine.</returns>
+    </member>
+    <member name="M:Eclair.Tools.CommandArgsExtension.GetFirstArgument``1(System.Collections.Generic.IEnumerable{System.String},System.String,System.String,``0)">
+      <summary>
+            Returns the first argument matching the provided expression.
+            </summary>
+      <param name="cmdLines">The IEnumerable from which to retrieve arguments.</param>
+      <param name="name">The name of the argument.</param>
+      <param name="format">A regular expression describing the format of the value to retrieve.</param>
+      <param name="defaultValue">The default value to return in case not matching element can be found.</param>
+      <typeparam name="T">The type of the returned argument.</typeparam>
+      <returns>defaultValue if not matching element is found, otherwise, the first matching element in cmdLine.</returns>
+    </member>
+    <member name="M:Eclair.Tools.CommandArgsExtension.GetFirstPathFromArguments(System.Collections.Generic.IEnumerable{System.String})">
+      <summary>
+            Returns the first argument that is formated as a rooted path.
+            </summary>
+      <param name="cmdLines">The IEnumerable from which to retrieve arguments.</param>
+      <returns>The first argument that is formated as a rooted path.</returns>
+    </member>
+    <member name="M:Eclair.Tools.CommandArgsExtension.TryParse``1(System.String)">
+      <summary>
+            Attempts to parse the specified string to an instance of the type provided.
+            </summary>
+      <param name="value">The string to parse.</param>
+      <typeparam name="T">The type to parse the string to.</typeparam>
+      <returns>A key/value pair made out of a boolean that indicates whether the string successfully parsed to an instance of T or not,
+            and the instance of T in case of success. If the parsing fails, default(T) is return.
+            </returns>
+    </member>
+    <member name="T:Eclair.Tools.DisposableTempFolder">
+      <summary>
+            Represent a temporary folder that will be deleted along with its content when the instance is disposed.
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolder.#ctor">
+      <summary>
+            Initializes a new instance of the DisposableTempFolder class
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolder.#ctor(System.String)">
+      <summary>
+            Initializes a new instance of the DisposableTempFolder class with a custom root directory. 
+            </summary>
+      <param name="rootDir">The path to the root of the disposable folder.</param>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolder.Combine(System.String)">
+      <summary>
+            Combines the specified file name with the full path of the temp folder.
+            </summary>
+      <param name="fileName">The file name to combine.</param>
+      <returns>The full path of the file.</returns>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolder.CreateSubdirectory(System.String)">
+      <summary>
+            Creates a subdirectory or subdirectories on the specified path. The specified path can be relative to this instance of the disposable folder. 
+            </summary>
+      <param name="path">The specified path. This cannot be a different disk volume or Universal Naming Convention (UNC) name. </param>
+      <returns>The last directory specified in path.</returns>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolder.Dispose">
+      <summary>
+            Releases all resources used by the current instance of the DisposableTempFolder class. 
+            This will also delete the underlying directory and its content.
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolder.Dispose(System.Boolean)">
+      <summary>
+            Releases the unmanaged resources used by the DisposableTempFolder and optionally releases the managed resources.
+            This will also delete the underlying directory and its content.
+            </summary>
+      <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+    </member>
+    <member name="P:Eclair.Tools.DisposableTempFolder.Extension">
+      <summary>
+            Gets the temporay folder's extention.
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolder.Finalize">
+      <summary>
+            Distructor for DisposableTempFolder
+            </summary>
+    </member>
+    <member name="P:Eclair.Tools.DisposableTempFolder.FullName">
+      <summary>
+            Gets the full path of the disposable folder.
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolder.GetDirectories">
+      <summary>
+             Returns the subdirectories of the current disposable folder.
+            </summary>
+      <returns>An array of propertyType DirectoryInfo.</returns>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolder.GetDirectories(System.String)">
+      <summary>
+            Returns an array of directories in the current disposable folder matching the given search criteria.
+            </summary>
+      <param name="searchPattern">The search string, such as "System*", used to search for all directories beginning with the word "System".</param>
+      <returns>An array of propertyType DirectoryInfo matching searchPattern.</returns>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolder.GetFiles">
+      <summary>
+            Returns a file list from the current disposable folder. 
+            </summary>
+      <returns>An array of propertyType FileInfo.</returns>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolder.GetFiles(System.String)">
+      <summary>
+            Returns a file list from the current disposable folder matching the given searchPattern.
+            </summary>
+      <param name="searchPattern">The search string, such as "*.txt".</param>
+      <returns>An array of propertyType FileInfo.</returns>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolder.GetRandomFilePath">
+      <summary>
+            Gets a random file name based inside the temporary folder.
+            </summary>
+      <returns>A FileInfo object to the new temp name.</returns>
+    </member>
+    <member name="P:Eclair.Tools.DisposableTempFolder.Name">
+      <summary>
+             Gets the name of the disposable folder.
+            </summary>
+    </member>
+    <member name="P:Eclair.Tools.DisposableTempFolder.Parent">
+      <summary>
+            Gets the parent directory of a specified subdirectory.
+            </summary>
+    </member>
+    <member name="P:Eclair.Tools.DisposableTempFolder.Root">
+      <summary>
+            Gets the root portion of a path.
+            </summary>
+    </member>
+    <member name="T:Eclair.Tools.DisposableTempFolderCollection">
+      <summary>
+            Represent a disposable collection of DisposableTempFolder objects. All items of the collections are disposed when the instance of the collection is disposed,
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolderCollection.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Tools.DisposableTempFolderCollection</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolderCollection.CreateOne">
+      <summary>
+            Initializes a new instance of the DisposableTempFolder class and adds it to the collection.
+            </summary>
+      <returns>
+            The newly created DisposableTempFolder object.
+            </returns>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolderCollection.CreateOne(System.String)">
+      <summary>
+            Initializes a new instance of the DisposableTempFolder in the specified root folder class and adds it to the collection.
+            </summary>
+      <param name="tempFolderRoot">The root folder in which the temp folder will be created.</param>
+      <returns>
+            The newly created DisposableTempFolder object.
+            </returns>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolderCollection.Dispose">
+      <summary>
+            Dispose the collection.
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolderCollection.Dispose(System.Boolean)">
+      <summary>
+            Dispose the collection. 
+            </summary>
+      <param name="disposing">True if managed ressources should be disposed of, false otherwise.</param>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolderCollection.Finalize">
+      <summary>
+            Destroys the current DisposableTempFolderCollection instance.
+            </summary>
+    </member>
+    <member name="T:Eclair.Tools.DisposableTempFolderException">
+      <summary>
+            The exception that is thrown when an error occurs in an instance of the DisposableTempFolder class.
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolderException.#ctor(System.String)">
+      <summary>
+            Initializes a new instance of the DisposableTempFolderException class with a specified error message. 
+            </summary>
+      <param name="message">The error message that explains the reason for the exception.</param>
+    </member>
+    <member name="M:Eclair.Tools.DisposableTempFolderException.#ctor(System.String,System.Exception)">
+      <summary>
+            Initializes a new instance of the DisposableTempFolderException class with a specified error message and a reference to the inner exception that is the cause of this exception.
+            </summary>
+      <param name="message">The error message that explains the reason for the exception</param>
+      <param name="innerException">The exception that is the cause of the current exception, or a null reference if no inner exception is specified.</param>
+    </member>
+    <member name="T:Eclair.Tools.IniFile">
+      <summary>
+            Provides static methods to manipulate INI files.
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.IniFile.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Tools.IniFile</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="M:Eclair.Tools.IniFile.DeleteEntry(System.String,System.String,System.String)">
+      <summary>
+            Delete a key  of the specified section.
+            </summary>
+      <param name="path">The path to the ini file.</param>
+      <param name="section">The section of the key.</param>
+      <param name="key">The key to delete.</param>
+    </member>
+    <member name="M:Eclair.Tools.IniFile.DeleteSection(System.String,System.String)">
+      <summary>
+            Deletes a section of an ini file.
+            </summary>
+      <param name="path">The path to the ini file.</param>
+      <param name="section">The section to delete.</param>
+    </member>
+    <member name="M:Eclair.Tools.IniFile.ReadValue(System.String,System.String,System.String)">
+      <summary>
+            Reads the value of the specified key in an ini file.
+            </summary>
+      <param name="path">The path to the ini file.</param>
+      <param name="section">The section of the key.</param>
+      <param name="key">the key to return the value for.</param>
+      <returns>The value of the specified key.</returns>
+    </member>
+    <member name="M:Eclair.Tools.IniFile.WriteValue(System.String,System.String,System.String,System.String)">
+      <summary>
+            Writes the specified value to the key in the section specified.
+            </summary>
+      <param name="path">The path to the ini file</param>
+      <param name="section">The section that contains the key to update</param>
+      <param name="key">The name of</param>
+      <param name="value">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>value</parameter>
+            <parameter>M:Eclair.Tools.IniFile.WriteValue(System.String,System.String,System.String,System.String)</parameter>
+          </include>
+        </markup>
+      </param>
+    </member>
+    <member name="T:Eclair.Tools.Log4netConfigTools">
+      <summary>
+            Provides utility methods to manage and configure log4net loggers and appenders.
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.Log4netConfigTools.AddAppender(System.String,log4net.Appender.IAppender)">
+      <summary>
+            Adds an appender to a logger
+            </summary>
+      <param name="loggerName">The logger to modify.</param>
+      <param name="appender">The appender to add.</param>
+    </member>
+    <member name="M:Eclair.Tools.Log4netConfigTools.AddAppenderToRoot(log4net.Appender.IAppender)">
+      <summary>
+            Adds an appender to all loggers.
+            </summary>
+      <param name="appender">The appender to add.</param>
+    </member>
+    <member name="M:Eclair.Tools.Log4netConfigTools.AddFileAppenderToRoot(System.String)">
+      <summary>
+            Adds an file appender to all loggers.
+            </summary>
+      <param name="name">The name of the appender.</param>
+    </member>
+    <member name="M:Eclair.Tools.Log4netConfigTools.FindAppender(System.String)">
+      <summary>
+            Finds a named appender already attached to a logger
+            </summary>
+      <param name="appenderName">The name of the appender to find.</param>
+      <returns>The attached appender.</returns>
+    </member>
+    <member name="M:Eclair.Tools.Log4netConfigTools.SetLevel(System.String,log4net.Core.Level)">
+      <summary>
+            Sets the level for a named logger
+            </summary>
+      <param name="loggerName">The logger to modify.</param>
+      <param name="levelName">The level to set the logger to.</param>
+    </member>
+    <member name="M:Eclair.Tools.Log4netConfigTools.SetRootLevel(log4net.Core.Level)">
+      <summary>
+            Set the log level to the root element.
+            </summary>
+      <param name="level">The desired level.</param>
+    </member>
+    <member name="M:Eclair.Tools.Log4netConfigTools.SetupFileAppender(System.String,System.String,log4net.Core.Level)">
+      <summary>
+            Configures the specified file appender.
+            </summary>
+      <param name="name">The name of the appender to configure</param>
+      <param name="fileName">The file name value for the appender.</param>
+      <param name="threshold">The threshold for the appender.</param>
+    </member>
+    <member name="M:Eclair.Tools.Log4netConfigTools.SetupRootFileAppender(System.String,System.String,log4net.Core.Level)">
+      <summary>
+            Configures the specified file appender attached to the root, or adds one if it doesn't exist.
+            </summary>
+      <param name="name">The name of the appender to configure</param>
+      <param name="fileName">The file name value for the appender.</param>
+      <param name="threshold">The threshold for the appender.</param>
+    </member>
+    <member name="T:Eclair.Tools.PerfMonitor">
+      <summary>
+            A utility class that measures and reports the execution time of a portion of code. 
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.PerfMonitor.Create(Eclair.Tools.PerfMonitorResult)">
+      <summary>
+            Returns a new instance of the PerfMonitor class.
+            </summary>
+      <param name="elapsed">An PerfMonitorResult object that will be used to store the results of the monitor.</param>
+      <returns>The newly created PerfMonitor instance.</returns>
+    </member>
+    <member name="M:Eclair.Tools.PerfMonitor.Create(System.String)">
+      <summary>
+            Returns a new instance of the PerfMonitor class.
+            </summary>
+      <param name="message">The message associated to the perf monitor.</param>
+      <returns>The newly created PerfMonitor instance.</returns>
+    </member>
+    <member name="M:Eclair.Tools.PerfMonitor.Create(System.String,Eclair.Tools.PerfMonitorOutputCallback)">
+      <summary>
+            Returns a new instance of the PerfMonitor class.
+            </summary>
+      <param name="message">The message associated to the perf monitor.</param>
+      <param name="writeCallback">The callback that will be invoked to log the results of the monitor.</param>
+      <returns>The newly created PerfMonitor instance.</returns>
+    </member>
+    <member name="M:Eclair.Tools.PerfMonitor.Dispose">
+      <summary>
+            Dispose the perf monitor.
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.PerfMonitor.Dispose(System.Boolean)">
+      <summary>
+             Dispose the perf monitor.
+            </summary>
+      <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+    </member>
+    <member name="T:Eclair.Tools.PerfMonitorOutputCallback">
+      <summary>
+            A callback used to log the results of the monitor.
+            </summary>
+      <param name="message">The message added to log.</param>
+    </member>
+    <member name="T:Eclair.Tools.PerfMonitorResult">
+      <summary>
+            A class that encapsulate the results measured with a PerfMon object.
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.PerfMonitorResult.#ctor">
+      <summary>
+            Initializes a new instance of the PerfMonitorResult class. 
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.PerfMonitorResult.#ctor(System.String)">
+      <summary>
+            Initializes a new instance of the PerfMonitorResult class with the specified label.
+            </summary>
+      <param name="label">The specified label</param>
+    </member>
+    <member name="P:Eclair.Tools.PerfMonitorResult.ElapsedTime">
+      <summary>
+             Get or set the elapsed time.
+            </summary>
+    </member>
+    <member name="P:Eclair.Tools.PerfMonitorResult.Label">
+      <summary>
+            Get or set the label.
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.PerfMonitorResult.ToString">
+      <summary>
+            Return the label and elapsed time as a string.
+            </summary>
+      <returns>A string representing the label and elapsed time.</returns>
+    </member>
+    <member name="T:Eclair.Tools.SecureStringExtentions">
+      <summary>
+            Defines static methods to encrypt, decrypt and convert to <see cref="T:System.String" /> to <see cref="T:System.Security.SecureString" /></summary>
+    </member>
+    <member name="M:Eclair.Tools.SecureStringExtentions.Protect(System.String)">
+      <summary>
+            Protects the string so that it can be securely stored in a configuration file.
+            </summary>
+      <param name="input">The string to encrypt.</param>
+      <returns>the encrypted string.</returns>
+    </member>
+    <member name="M:Eclair.Tools.SecureStringExtentions.ToSecureString(System.String)">
+      <summary>
+            Converts the string to a <see cref="T:System.Security.SecureString" /></summary>
+      <param name="input">The string to secure.</param>
+      <returns>the resulting <see cref="T:System.Security.SecureString" />.</returns>
+    </member>
+    <member name="M:Eclair.Tools.SecureStringExtentions.ToUnsecureString(System.Security.SecureString)">
+      <summary>
+            Converts the <see cref="T:System.Security.SecureString" /> to a normal string.
+            </summary>
+      <param name="input">The <see cref="T:System.Security.SecureString" /> to convert.</param>
+      <returns>A string that represent the content of the provided <see cref="T:System.Security.SecureString" />.</returns>
+    </member>
+    <member name="M:Eclair.Tools.SecureStringExtentions.Unprotect(System.String)">
+      <summary>
+            Decrypts the protected data.
+            </summary>
+      <param name="encryptedData">The data to decrypt.</param>
+      <returns>The decrypted string.</returns>
+    </member>
+    <member name="T:Eclair.Tools.StreamExtentions">
+      <summary>
+            Utilities to copy the whole content of a stream into another one.
+            </summary>
+    </member>
+    <member name="M:Eclair.Tools.StreamExtentions.CopyTo(System.IO.Stream,System.IO.Stream)">
+      <summary>
+            Copies bytes from the current stream and writes them to the destination stream.
+            </summary>
+      <param name="source">The stream to read from.</param>
+      <param name="destination">The stream to copy to.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Eclair.Tools.StreamExtentions.CopyTo(System.IO.Stream,System.IO.Stream)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Eclair.Tools.StreamExtentions.CopyTo(System.IO.Stream,System.IO.Stream,System.Int32)">
+      <summary>
+            Copies bytes from the current stream and writes them to the destination stream using a specified buffer size.
+            </summary>
+      <param name="source">The stream to read from.</param>
+      <param name="destination">The stream to copy to.</param>
+      <param name="bufferSize">The size of the buffer.</param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Eclair.Tools.StreamExtentions.CopyTo(System.IO.Stream,System.IO.Stream,System.Int32)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+  </members>
+</doc>

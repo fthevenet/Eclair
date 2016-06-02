@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>ECLAIR</name>
+  </assembly>
+  <members>
+    <member name="T:Eclair.Terminal.Program">
+      <summary>
+            Represent the entry point class for the executable.
+            </summary>
+    </member>
+    <member name="M:Eclair.Terminal.Program.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Eclair.Terminal.Program</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+  </members>
+</doc>
