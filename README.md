@@ -1,5 +1,5 @@
 #Expandable Command Line Applications Interactive Runtime (ECLAIR)
-Copyright (c) 2016 Frederic Thevenet. All Rights Reserved.
+Copyright (c) 2016 Frederic Thevenet.
 
 This software is license under the Apache License
 
